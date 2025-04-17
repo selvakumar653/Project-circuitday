@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard - Hotel Management</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="css/admin.css">
+</head>
+
+<body>
+    <div class="dashboard">
+        <!-- Sidebar -->
+        <div class="sidebar">
+            <div class="brand">
+                <h2>Hotel Admin</h2>
+                <p>Management Dashboard</p>
+            </div>
+            <div class="sidebar-menu">
+                <a href="#" class="menu-item active" onclick="loadContent('admin.php')">
+                    <i class="fas fa-users"></i>
+                    <span>User Management</span>
+                </a>
+                <a href="#" class="menu-item" onclick="loadContent('billdetail.php')">
+                    <i class="fas fa-file-invoice"></i>
+                    <span>Bill Details</span>
+                </a>
+                <a href="#" class="menu-item" onclick="toggleSettings(this)">
+                    <i class="fas fa-cog"></i>
+                    <span>Settings</span>
+                    <i class="fas fa-chevron-down" style="margin-left: auto; font-size: 0.8rem;"></i>
+                </a>
+                <div class="sub-menu" style="display: none;">
+                    <a href="#" class="menu-item" onclick="loadContent('settings/profile.php')">
+                        <i class="fas fa-user-cog"></i>
+                        <span>Profile Settings</span>
+                    </a>
+                    <a href="#" class="menu-item" onclick="loadContent('settings/menu.php')">
+                        <i class="fas fa-utensils"></i>
+                        <span>Menu Management</span>
+                    </a>
+                    <a href="#" class="menu-item" onclick="loadContent('settings/theme.php')">
+                        <i class="fas fa-paint-brush"></i>
+                        <span>Theme Settings</span>
+                    </a>
+                    <a href="#" class="menu-item" onclick="loadContent('settings/security.php')">
+                        <i class="fas fa-shield-alt"></i>
+                        <span>Security</span>
+                    </a>
+                    <a href="#" class="menu-item" onclick="loadContent('settings/stock_update.php')">
+                        <i class="fas fa-boxes"></i>
+                        <span>Stock Management</span>
+                    </a>
+                    <a href="#" class="menu-item" onclick="loadContent('settings/stock_insert.php')">
+                        <i class="fas fa-plus-circle"></i>
+                        <span>Add New Item</span>
+                    </a>
+                </div>
+                <a href="C:\xampp\htdocs\Project\forms\login.php" class="menu-item">
+                    <i class="fas fa-sign-out-alt"></i>
+                    <span>Logout</span>
+                </a>
+            </div>
+        </div>
+
+
+        <!-- Main Content -->
+        <div class="main-content">
+            <div class="header">
+                <h1>Dashboard</h1>
+                <div class="user-info">
+                    <span>Admin</span>
+                    <img src="https://ui-avatars.com/api/?name=Admin&background=random" alt="Admin">
+                </div>
+            </div>
+
+            <div class="dashboard-cards">
+                <div class="card">
+                    <h3>Total Users</h3>
+                    <p id="userCount">Loading...</p>
+                </div>
+                <div class="card">
+                    <h3>Total Orders</h3>
+                    <p id="orderCount">Loading...</p>
+                </div>
+                <div class="card">
+                    <h3>Revenue</h3>
+                    <p id="revenue">Loading...</p>
+                </div>
+            </div>
+
+            <div class="table-section">
+                <div class="table-header">
+                    <h2>Recent Activities</h2>
+                    <div class="table-controls">
+                        <input type="search" placeholder="Search..." id="tableSearch">
+                        <select id="tableFilter">
+                            <option value="all">All</option>
+                            <option value="users">Users</option>
+                            <option value="orders">Orders</option>
+                            <option value="inventory">Inventory</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="table-responsive">
+                    <table id="dataTable">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Date</th>
+                                <th>Type</th>
+                                <th>Description</th>
+                                <th>Status</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tableBody">
+                            <!-- Table data will be loaded dynamically -->
+                        </tbody>
+                    </table>
+                </div>
+                <div class="table-pagination">
+                    <button id="prevPage">Previous</button>
+                    <span id="currentPage">Page 1</span>
+                    <button id="nextPage">Next</button>
+                </div>
+            </div>
+
+            <div class="content-frame">
+                <iframe id="contentFrame" src="admin.php" frameborder="0"></iframe>
+            </div>
+        </div>
+    </div>
+</body>
+<script src="./script.js"></script>
+
+</html>

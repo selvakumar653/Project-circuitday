@@ -1,0 +1,429 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+:root {
+    --primary-color: #4B6CB7;
+    --secondary-color: #82A0D8;
+    --accent-color: #5C8BE3;
+    --bg-dark: #FFFFFF;
+    --bg-darker: #F5F7FA;
+    --text-primary: #2C3E50;
+    --text-bright: #34495E;
+    --error-color: #E74C3C;
+    --success-color: #2ECC71;
+    --gradient-primary: linear-gradient(135deg, #4B6CB7, #82A0D8);
+    --gradient-secondary: linear-gradient(145deg, #F5F7FA, #E6EBF2);
+    --shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.3);
+    --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.3);
+    --shadow-lg: 0 8px 16px rgba(0, 0, 0, 0.4);
+    --transition-base: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    --gradient-background: linear-gradient(
+        135deg,
+        #e0eafc 0%,
+        #cfdef3 25%,
+        #e0eafc 50%,
+        #cfdef3 75%,
+        #e0eafc 100%
+    );
+    --container-bg: rgba(255, 255, 255, 0.95);
+    --border-radius-lg: 20px;
+    --border-radius-md: 15px;
+    --border-radius-sm: 10px;
+}
+
+body {
+    background: var(--gradient-background);
+    background-size: 400% 400%;
+    background-attachment: fixed;
+    animation: gradientAnimation 15s ease infinite;
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+}
+
+.container {
+    background: var(--container-bg);
+    border: 1px solid rgba(75, 108, 183, 0.1);
+    backdrop-filter: blur(15px);
+    box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.5);
+    width: 100%;
+    max-width: 500px;
+    overflow: hidden;
+    transform: none;  /* Remove float animation */
+    transition: var(--transition-base);
+    animation: scaleIn 0.6s ease-out;  /* Keep only initial animation */
+    border-radius: var(--border-radius-lg);
+}
+
+/* Remove container hover effect */
+.container:hover {
+    transform: none;
+    box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.5);  /* Keep constant shadow */
+}
+
+.header {
+    background: var(--gradient-primary);
+    color: white;
+    padding: 30px 25px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+    animation: scaleIn 0.5s ease-out;
+    border-radius: var(--border-radius-lg) var(--border-radius-lg) 0 0;
+}
+
+.header::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 60%);
+    transform: rotate(30deg);
+}
+
+.header h2 {
+    margin-bottom: 12px;
+    font-size: 2rem;
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+}
+
+.header:hover h2 {
+    transform: scale(1.05);
+    text-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+}
+
+.form-container {
+    padding: 35px 30px;
+}
+
+.form-group {
+    margin-bottom: 25px;
+    position: relative;
+    margin-bottom: 35px;
+    animation: fadeInUp 0.5s ease forwards;
+    animation-delay: calc(var(--animation-order) * 0.1s);
+}
+
+.form-group:nth-child(1) { animation-delay: 0.1s; }
+.form-group:nth-child(2) { animation-delay: 0.2s; }
+.form-group:nth-child(3) { animation-delay: 0.3s; }
+.form-group:nth-child(4) { animation-delay: 0.4s; }
+.form-group:nth-child(5) { animation-delay: 0.5s; }
+.form-group:nth-child(6) { animation-delay: 0.6s; }
+
+.form-group label {
+    display: block;
+    margin-bottom: 10px;
+    font-weight: 600;
+    color: var(--text-bright);
+    font-size: 0.95rem;
+    transition: color 0.3s ease;
+}
+
+.form-group:focus-within label {
+    color: var(--accent-color);
+}
+
+.form-group:hover label {
+    transform: translateX(5px);
+    color: var(--accent-color);
+}
+
+.form-group input {
+    width: 100%;
+    padding: 15px 20px;
+    border: 2px solid rgba(108, 114, 203, 0.1);
+    border-radius: var(--border-radius-md);
+    font-size: 1rem;
+    transition: var(--transition-base);
+    background: rgba(255, 255, 255, 0.9);
+    color: var(--text-primary);
+    backdrop-filter: blur(5px);
+}
+
+/* Modify form input hover */
+.form-group input:hover {
+    background: rgba(255, 255, 255, 0.9);
+    border-color: rgba(108, 114, 203, 0.2);
+    transform: none;  /* Remove perspective transform */
+    box-shadow: none;  /* Remove hover shadow */
+}
+
+.form-group input:focus {
+    border-color: var(--accent-color);
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(137, 220, 254, 0.2);
+    transform: none;
+    box-shadow: 0 8px 24px rgba(74, 101, 114, 0.2);
+    animation: pulseLight 1.5s infinite;
+}
+
+.form-group::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    width: 0;
+    height: 2px;
+    background: var(--accent-color);
+    transition: width 0.3s ease, left 0.3s ease;
+}
+
+.form-group:focus-within::after {
+    width: 100%;
+    left: 0;
+}
+
+.btn {
+    background: var(--gradient-primary);
+    color: white;
+    border: none;
+    padding: 16px 24px;
+    border-radius: var(--border-radius-md);
+    cursor: pointer;
+    width: 100%;
+    font-size: 1.1rem;
+    font-weight: 600;
+    transition: var(--transition-base);
+    box-shadow: 0 4px 15px rgba(108, 114, 203, 0.3);
+    position: relative;
+    overflow: hidden;
+    background-size: 200% 100%;
+    background-image: linear-gradient(
+        90deg,
+        #4B6CB7 0%,
+        #82A0D8 50%,
+        #4B6CB7 100%
+    );
+    animation: shimmer 3s infinite linear;
+}
+
+.btn::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+    transition: 0.5s;
+}
+
+.btn:hover::before {
+    left: 100%;
+}
+
+/* Update button hover */
+.btn:hover {
+    transform: none;  /* Remove vertical movement */
+    box-shadow: none;  /* Remove hover shadow */
+    filter: brightness(110%);  /* Keep subtle brightness change */
+}
+
+.btn:focus {
+    animation: pulse 1.5s infinite;
+}
+
+.btn.loading {
+    position: relative;
+    color: transparent;
+}
+
+.btn.loading::after {
+    content: "";
+    position: absolute;
+    width: 20px;
+    height: 20px;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    border: 2px solid #fff;
+    border-radius: 50%;
+    border-top-color: transparent;
+    animation: rotate 1s linear infinite;
+}
+
+.login-link {
+    text-align: center;
+    margin-top: 25px;
+    font-size: 0.95rem;
+    color: var(--text-primary);
+}
+
+.login-link a {
+    color: var(--accent-color);
+    text-decoration: none;
+    font-weight: 600;
+    transition: all 0.3s ease;
+}
+
+/* Update login link hover */
+.login-link a:hover {
+    transform: none;  /* Remove transform */
+    text-shadow: none;  /* Remove text shadow */
+    letter-spacing: 0.5px;  /* Keep letter spacing effect */
+}
+
+.error-message, .success-message {
+    padding: 15px;
+    border-radius: var(--border-radius-sm);
+    margin-bottom: 25px;
+    font-size: 0.95rem;
+    display: none;
+    animation: slideIn 0.4s ease-out, shake 0.5s ease-out;
+}
+
+.error-message {
+    background: rgba(247, 118, 142, 0.1);
+    color: var(--error-color);
+    border-left: 4px solid var(--error-color);
+}
+
+.success-message {
+    background: rgba(158, 206, 106, 0.1);
+    color: var(--success-color);
+    border-left: 4px solid var(--success-color);
+}
+
+.success-message::before {
+    content: '✓';
+    margin-right: 10px;
+    display: inline-block;
+    animation: checkmark 0.5s ease-in-out;
+}
+
+@keyframes slideIn {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes gradientMove {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+}
+
+@keyframes checkmark {
+    0% { transform: scale(0); }
+    50% { transform: scale(1.2); }
+    100% { transform: scale(1); }
+}
+
+@keyframes pulse {
+    0% { box-shadow: 0 0 0 0 rgba(249, 170, 51, 0.4); }
+    70% { box-shadow: 0 0 0 10px rgba(249, 170, 51, 0); }
+    100% { box-shadow: 0 0 0 0 rgba(249, 170, 51, 0); }
+}
+
+@keyframes rotate {
+    100% { transform: translate(-50%, -50%) rotate(360deg); }
+}
+
+@keyframes floatIn {
+    from { transform: translateY(20px); opacity: 0; }
+    to { transform: translateY(0); opacity: 1; }
+}
+
+@keyframes scaleIn {
+    from { transform: scale(0.9); opacity: 0; }
+    to { transform: scale(1); opacity: 1; }
+}
+
+@keyframes shimmer {
+    0% { background-position: -100% 0; }
+    100% { background-position: 100% 0; }
+}
+
+@keyframes pulseLight {
+    0% { box-shadow: 0 0 0 0 rgba(54, 209, 220, 0.4); }
+    70% { box-shadow: 0 0 0 10px rgba(54, 209, 220, 0); }
+    100% { box-shadow: 0 0 0 0 rgba(54, 209, 220, 0); }
+}
+
+@keyframes shake {
+    0%, 100% { transform: translateX(0); }
+    10%, 30%, 50%, 70%, 90% { transform: translateX(-5px); }
+    20%, 40%, 60%, 80% { transform: translateX(5px); }
+}
+
+@keyframes float {
+    0% { transform: translateY(0px); }
+    50% { transform: translateY(-5px); }
+    100% { transform: translateY(0px); }
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes gradientAnimation {
+    0% { background-position: 0% 50% }
+    50% { background-position: 100% 50% }
+    100% { background-position: 0% 50% }
+}
+
+@media (max-width: 480px) {
+    .container {
+        margin: 10px;
+    }
+    
+    .header h2 {
+        font-size: 1.5rem;
+    }
+    
+    .form-container {
+        padding: 20px 15px;
+    }
+}
+
+/* Update dark mode to use matching gradient */
+@media (prefers-color-scheme: dark) {
+    body {
+        background: linear-gradient(135deg, #e0eafc 0%, #cfdef3 100%);
+    }
+    
+    .container {
+        background: rgba(255, 255, 255, 0.95);
+        box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.2);
+    }
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+    width: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: var(--bg-darker);
+    border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+    background: var(--gradient-primary);
+    border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: linear-gradient(to bottom, #4B6CB7, #82A0D8);
+}

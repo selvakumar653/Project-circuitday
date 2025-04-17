@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hotel Management System - Sign Up</title>
+    <link rel="stylesheet" href="css\signupstyle.css">
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h2>Create Your Account</h2>
+            <p>Sign up to start ordering delicious food from our hotel</p>
+        </div>
+        
+        <div class="form-container">
+            <div class="error-message" id="errorMsg"></div>
+            <div class="success-message" id="successMsg"></div>
+            
+            <form id="signupForm" action="signup.php" method="POST">
+                <div class="form-group">
+                    <label for="fullname">Full Name</label>
+                    <input type="text" id="fullname" name="fullname" required placeholder="Enter your full name">
+                </div>
+                
+                <div class="form-group">
+                    <label for="email">Email Address</label>
+                    <input type="email" id="email" name="email" required placeholder="Enter your email address">
+                </div>
+                
+                <div class="form-group">
+                    <label for="phone">Phone Number</label>
+                    <input type="tel" id="phone" name="phone" required placeholder="Enter your phone number">
+                </div>
+                
+                <div class="form-group">
+                    <label for="room">Room Number</label>
+                    <input type="text" id="room" name="room" required placeholder="Enter your room number">
+                </div>
+                
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <input type="password" id="password" name="password" required placeholder="Create a password">
+                </div>
+                
+                <div class="form-group">
+                    <label for="confirm_password">Confirm Password</label>
+                    <input type="password" id="confirm_password" name="confirm_password" required placeholder="Confirm your password">
+                </div>
+                
+                <button type="submit" class="btn" id="submitBtn">Create Account</button>
+            </form>
+            
+            <div class="login-link">
+                Already have an account? <a href="loginform.html">Login here</a>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.getElementById('signupForm').addEventListener('submit', function(e) {
+            const password = document.getElementById('password').value;
+            const confirmPassword = document.getElementById('confirm_password').value;
+            const errorMsg = document.getElementById('errorMsg');
+            
+            if (password !== confirmPassword) {
+                e.preventDefault();
+                errorMsg.textContent = "Passwords do not match!";
+                errorMsg.style.display = "block";
+                setTimeout(() => {
+                    errorMsg.style.display = "none";
+                }, 3000);
+            }
+        });
+
+        // Add animation when page loads
+        document.addEventListener('DOMContentLoaded', function() {
+            const formGroups = document.querySelectorAll('.form-group');
+            formGroups.forEach((group, index) => {
+                group.style.animationDelay = `${index * 0.1}s`;
+            });
+        });
+    </script>
+</body>
+</html>

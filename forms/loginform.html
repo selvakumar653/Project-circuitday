@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hotel Management System - Login</title>
+    <link rel="stylesheet" href="css\signupstyle.css">
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h2>Welcome Back</h2>
+            <p>Login to access your account and order delicious food</p>
+        </div>
+        
+        <div class="form-container">
+            <div class="error-message" id="errorMsg"></div>
+            <div class="success-message" id="successMsg"></div>
+            
+            <form id="loginForm" action="login.php" method="POST">
+                <div class="form-group">
+                    <label for="email">Email Address</label>
+                    <input type="email" id="email" name="email" required placeholder="Enter your email address">
+                </div>
+                
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <input type="password" id="password" name="password" required placeholder="Enter your password">
+                </div>
+                
+                <button type="submit" class="btn" id="loginBtn">Login</button>
+            </form>
+            
+            <div class="signup-link">
+                Don't have an account? <a href="signform.html">Sign up here</a>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Add animation when page loads
+        document.addEventListener('DOMContentLoaded', function() {
+            const formGroups = document.querySelectorAll('.form-group');
+            formGroups.forEach((group, index) => {
+                group.style.animationDelay = `${index * 0.1}s`;
+            });
+        });
+    </script>
+</body>
+</html>
