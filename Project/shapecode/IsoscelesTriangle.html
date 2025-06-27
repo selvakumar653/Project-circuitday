@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interactive Isosceles Triangle Drawer</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #f6d365 0%, #fda085 100%);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            color: #333;
+            text-align: center;
+        }
+
+        h1 {
+            font-size: 2rem;
+            margin-bottom: 15px;
+            color: #333;
+            text-shadow: 2px 2px 4px rgba(255, 255, 255, 0.5);
+        }
+
+        .container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 30px;
+            margin-top: 10px;
+        }
+
+        .input-container {
+            background-color: rgba(255, 255, 255, 0.5);
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            width: auto;
+            height: auto;
+            transition: transform 0.3s ease-in-out;
+            display: flex;
+            flex-direction: column;
+            align-items: start;
+        }
+
+        .input-container:hover, .output:hover {
+            transform: translateY(-5px);
+        }
+
+        label {
+            font-size: 0.75rem;
+            font-weight: bold;
+            display: block;
+            margin-top: 8px;
+            color: #333;
+        }
+
+        input[type="number"], input[type="color"], button {
+            font-size: 14px;
+            padding: 8px;
+            margin: 8px 0;
+            border-radius: 5px;
+            border: 2px solid #ccc;
+            width: 100%;
+            transition: all 0.3s ease;
+        }
+
+        input[type="color"] {
+            width: 50px;
+            height: 30px;
+            padding: 2px 4px;
+            cursor: pointer;
+        }
+
+        .color-input-wrapper {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            width: 100%;
+            margin: 6px 0;
+        }
+
+        button {
+            background-color: #ff6f61;
+            color: white;
+            cursor: pointer;
+            font-weight: bold;
+            border: none;
+            transition: background-color 0.3s ease, transform 0.2s ease-in-out;
+            font-size: 12px;
+            padding: 6px 12px;
+            width: 200px;
+        }
+
+        button:hover {
+            background-color: #ff3b2f;
+            transform: scale(1.05);
+        }
+
+        .output {
+            font-size: 1rem;
+            color: #333;
+            font-weight: bold;
+            min-width: 150px;
+            padding: 20px;
+            background-color: rgba(255, 255, 255, 0.5);
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+
+        canvas {
+            border: 2px solid #ff6f61;
+            border-radius: 10px;
+            background: rgba(255, 255, 255, 0.5);
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease, border-color 0.3s ease;
+            width: 500px;
+            height: 500px;
+        }
+
+        canvas:hover {
+            transform: scale(1.05);
+        }
+
+        .dashboard-button, .previous-button {
+            position: absolute;
+            background-color: #6a89cc;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+            width: auto;
+            font-size: 14px;
+        }
+
+        .dashboard-button {
+            top: 20px;
+            right: 20px;
+        }
+
+        .previous-button {
+            bottom: 10px;
+            left: 20px;
+        }
+
+        #sideError {
+            color: red;
+            font-size: 0.75rem;
+            display: none;
+            margin-top: 5px;
+        }
+    </style>
+</head>
+<body>
+    <a href="C:\project\mainfile\main.html">
+        <button class="dashboard-button" id="dashboardButton">
+            <i class="fas fa-tachometer-alt"></i> Dashboard
+        </button>
+    </a>
+
+    <a href="C:\project\shapecode\trianglemenu.html">
+        <button class="previous-button" id="previousButton">
+            <i class="fas fa-arrow-left"></i> Previous
+        </button>
+    </a>
+
+    <h1>Interactive Isosceles Triangle Drawer</h1>
+    
+    <div class="container">
+        <div class="input-container">
+            <label for="base">Base Length (அடிப்பாகம்):</label>
+            <input type="number" id="base" placeholder="Enter base length" min="1">
+            
+            <label for="side">Side Length (நீளம்):</label>
+            <input type="number" id="side" placeholder="Enter side length" min="1">
+            
+            <div class="color-input-wrapper">
+                <label for="fillColor">Fill Color (நிரப்பு நிறம்):</label>
+                <input type="color" id="fillColor">
+            </div>
+            
+            <div class="color-input-wrapper">
+                <label for="strokeColor">Stroke Color (கோடு நிறம்):</label>
+                <input type="color" id="strokeColor">
+            </div>
+            
+            <button onclick="drawIsoscelesTriangle()">Draw Triangle</button>
+            <span id="sideError"></span>
+        </div>
+
+        <canvas id="canvas" width="500" height="500"></canvas>
+
+        <div class="output">
+            <p>Area (பரப்பளவு): <span id="area">0 cm²</span></p>
+        </div>
+        <div class="output">
+            <p>Perimeter (சுற்றளவு): <span id="perimeter">0 cm</span></p>
+        </div>
+    </div>
+
+    <script>
+        function drawIsoscelesTriangle() {
+            var base = parseFloat(document.getElementById("base").value);
+            var side = parseFloat(document.getElementById("side").value);
+            var fillColor = document.getElementById("fillColor").value;
+            var strokeColor = document.getElementById("strokeColor").value;
+            var sideError = document.getElementById("sideError");
+
+            // Reset the error message
+            sideError.style.display = "none";
+            sideError.textContent = "";
+
+            // Validate the side lengths
+            if (isNaN(base) || isNaN(side) || base <= 0 || side <= 0) {
+                sideError.textContent = "Please enter valid side lengths.";
+                sideError.style.display = "block";
+                return;
+            }
+
+            // Check if the sides form a valid isosceles triangle
+            if (2 * side <= base) {
+                sideError.textContent = "The side lengths do not form a valid isosceles triangle.";
+                sideError.style.display = "block";
+                return;
+            }
+
+            // Calculate the perimeter and area
+            var perimeter = 2 * side + base;
+            var height = Math.sqrt(Math.pow(side, 2) - Math.pow(base / 2, 2));
+            var area = (base * height) / 2;
+
+            document.getElementById("area").textContent = area.toFixed(2) + " cm²";
+            document.getElementById("area").style.color = fillColor;
+            document.getElementById("perimeter").textContent = perimeter.toFixed(2) + " cm";
+            document.getElementById("perimeter").style.color = strokeColor;
+
+            var canvas = document.getElementById("canvas");
+            var ctx = canvas.getContext("2d");
+
+            canvas.style.borderColor = strokeColor;
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            ctx.fillStyle = fillColor;
+            ctx.strokeStyle = strokeColor;
+            ctx.lineWidth = 2;
+
+            // Draw the isosceles triangle
+            var centerX = canvas.width / 2;
+            var centerY = canvas.height / 2;
+
+            ctx.beginPath();
+            ctx.moveTo(centerX, centerY - height / 2);
+            ctx.lineTo(centerX - base / 2, centerY + height / 2);
+            ctx.lineTo(centerX + base / 2, centerY + height / 2);
+            ctx.closePath();
+
+            ctx.fill();
+            ctx.stroke();
+        }
+
+        // Add event listeners for Enter key
+        document.querySelectorAll('input').forEach(input => {
+            input.addEventListener("keydown", function(event) {
+                if (event.key === "Enter") {
+                    drawIsoscelesTriangle();
+                }
+            });
+        });
+    </script>
+</body>
+</html>

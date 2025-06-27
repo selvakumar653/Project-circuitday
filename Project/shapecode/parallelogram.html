@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interactive Parallelogram Drawer</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #f6d365 0%, #fda085 100%);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            color: #333;
+            text-align: center;
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+            color: #333;
+            text-shadow: 2px 2px 4px rgba(255, 255, 255, 0.5);
+        }
+
+        .container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 40px;
+            margin-top: 20px;
+        }
+
+        .input-container {
+            background-color: rgba(255, 255, 255, 0.5);
+            padding: 40px;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            width: auto;
+            height: auto;
+            transition: transform 0.3s ease-in-out;
+            display: flex;
+            flex-direction: column;
+            align-items: start;
+        }
+
+        .input-container:hover, .output:hover {
+            transform: translateY(-5px);
+        }
+
+        label {
+            font-size: 0.875rem;
+            font-weight: bold;
+            display: block;
+            margin-top: 10px;
+            color: #333;
+        }
+
+        input[type="number"], input[type="color"], button {
+            font-size: 16px;
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 5px;
+            border: 2px solid #ccc;
+            width: 100%;
+            transition: all 0.3s ease;
+        }
+
+        input[type="number"], input[type="color"] {
+            background-color: rgba(255, 255, 255, 0.8);
+            border: 2px solid #ccc;
+        }
+
+        input:focus {
+            border-color: #ff6f61;
+            outline: none;
+        }
+
+        button {
+            background-color: #ff6f61;
+            color: white;
+            cursor: pointer;
+            font-weight: bold;
+            border: none;
+            transition: background-color 0.3s ease, transform 0.2s ease-in-out;
+        }
+        button:hover {
+            background-color: #ff3b2f;
+            transform: scale(1.05);
+        }
+
+        .output {
+            font-size: 1.2rem;
+            color: #333;
+            font-weight: bold;
+            min-width: 200px;
+            padding: 25px;
+            background-color: rgba(255, 255, 255, 0.5);
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+
+        .output span {
+            color: #ff6f61;
+            transition: color 0.3s ease;
+        }
+
+        canvas {
+            border: 2px solid #ff6f61;
+            border-radius: 10px;
+            background: rgba(255, 255, 255, 0.5);
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease, border-color 0.3s ease;
+        }
+
+        canvas:hover {
+            transform: scale(1.05);
+        }
+
+        .dashboard-button, .previous-button {
+            position: absolute;
+            background-color: #6a89cc;
+            color: white;
+            padding: 12px 24px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+            width: auto;
+            font-size: 16px;
+        }
+
+        .dashboard-button:hover, .previous-button:hover {
+            background-color: #4a69bd;
+            transform: scale(1.05);
+        }
+
+        .dashboard-button {
+            top: 20px;
+            right: 20px;
+        }
+
+        .previous-button {
+            bottom: 20px;
+            left: 20px;
+        }
+
+        .dashboard-button i, .home-button i, .previous-button i {
+            margin-right: 8px;
+        }
+
+        #baseError, #heightError, #sideError {
+            color: red;
+            font-size: 0.9rem;
+            display: none;
+            margin-top: 5px;
+        }
+
+        input[type="color"] {
+            width: 60px;
+            height: 40px;
+            padding: 2px 4px;
+            cursor: pointer;
+        }
+
+        .color-input-wrapper {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            width: 100%;
+            margin: 8px 0;
+        }
+    </style>
+</head>
+<body>
+    <a href="C:\project\mainfile\main.html">
+        <button class="dashboard-button" id="dashboardButton">
+            <i class="fas fa-tachometer-alt"></i> Dashboard
+        </button>
+    </a>
+
+    <a href="C:\Project\mainfile\shape.html">
+        <button class="previous-button" id="previousButton">
+            <i class="fas fa-arrow-left"></i> Previous
+        </button>
+    </a>
+
+    <h1>Interactive Parallelogram Drawer</h1>
+    
+    <div class="container">
+        <div class="input-container">
+            <label for="base">Base Length (அடிப்பாகம்): </label>
+            <input type="number" id="base" placeholder="Enter base length" min="1">
+            <span id="baseError"></span>
+            
+            <label for="height">Height (உயரம்): </label>
+            <input type="number" id="height" placeholder="Enter height" min="1">
+            <span id="heightError"></span>
+                
+            <div class="color-input-wrapper">
+                <label for="fillColor">Fill Color (நிரப்பு நிறம்): </label>
+                <input type="color" id="fillColor">
+            </div>
+            
+            <div class="color-input-wrapper">
+                <label for="strokeColor">Stroke Color (கோடு நிறம்): </label>
+                <input type="color" id="strokeColor">
+            </div>
+
+            <button onclick="drawParallelogram()">Draw Parallelogram</button>
+        </div>
+        
+        <canvas id="parallelogramCanvas" width="500" height="500"></canvas>
+
+        <div class="output">
+            <p>Area (பரப்பளவு): <span id="area">0 cm²</span></p>
+        </div>
+        <div class="output">
+            <p>Perimeter (சுற்றளவு): <span id="perimeter">0 cm</span></p>
+        </div>
+    </div>
+
+    <script>
+        function drawParallelogram() {
+            var baseInput = document.getElementById("base").value;
+            var heightInput = document.getElementById("height").value;
+            var fillColor = document.getElementById("fillColor").value;
+            var strokeColor = document.getElementById("strokeColor").value;
+            var baseError = document.getElementById("baseError");
+            var heightError = document.getElementById("heightError");
+
+            // Reset the error messages
+            baseError.style.display = "none";
+            baseError.textContent = "";
+            heightError.style.display = "none";
+            heightError.textContent = "";
+
+
+            if (heightInput === "" || isNaN(heightInput)) {
+                heightError.textContent = "Please enter a valid numeric height.";
+                heightError.style.display = "block";
+                return;
+            }
+
+            var base = parseFloat(baseInput);
+            var height = parseFloat(heightInput);
+
+            if (base <= 0 || base >= 250) {
+                baseError.textContent = "Base length must be between 1 and 249.";
+                baseError.style.display = "block";
+                return;
+            }
+
+            if (height <= 0 || height >= 250) {
+                heightError.textContent = "Height must be between 1 and 249.";
+                heightError.style.display = "block";
+                return;
+            }
+
+            // Calculate and draw the parallelogram
+            var area = base * height;
+            var perimeter = 2 * (base + height);
+
+            document.getElementById("area").textContent = area.toFixed(2) + " cm²";
+            document.getElementById("area").style.color = fillColor;
+            document.getElementById("perimeter").textContent = perimeter.toFixed(2) + " cm";
+            document.getElementById("perimeter").style.color = strokeColor;
+
+            var canvas = document.getElementById("parallelogramCanvas");
+            var ctx = canvas.getContext("2d");
+
+            canvas.style.borderColor = strokeColor;
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            ctx.fillStyle = fillColor;
+            ctx.strokeStyle = strokeColor;
+            ctx.lineWidth = 2;
+
+            var offsetX = 50; // Offset for the parallelogram slant
+
+            ctx.beginPath();
+            ctx.moveTo(100, 100);
+            ctx.lineTo(100 + base, 100);
+            ctx.lineTo(100 + base - offsetX, 100 + height);
+            ctx.lineTo(100 - offsetX, 100 + height);
+            ctx.closePath();
+
+            ctx.fill();
+            ctx.stroke();
+        }
+
+        // Add event listener for Enter key in the inputs
+        document.getElementById("base").addEventListener("keydown", function(event) {
+            if (event.key === "Enter") {
+                drawParallelogram();
+            }
+        });
+    </script>
+</body>
+</html>

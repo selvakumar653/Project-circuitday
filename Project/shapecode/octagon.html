@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interactive Octagon Drawer</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #f6d365 0%, #fda085 100%);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            color: #333;
+            text-align: center;
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+            color: #333;
+            text-shadow: 2px 2px 4px rgba(255, 255, 255, 0.5);
+        }
+
+        .container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 40px;
+            margin-top: 20px;
+        }
+
+        .input-container {
+            background-color: rgba(255, 255, 255, 0.5);
+            padding: 40px;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            width: 350px; height: 350px;
+            transition: transform 0.3s ease-in-out;
+            display: flex;
+            flex-direction: column;
+            align-items: start;
+        }
+
+        .input-container:hover, .output:hover {
+            transform: translateY(-5px);
+        }
+
+        label {
+            font-size: 0.875rem; /* Decreased from 1rem to 0.875rem (14px) */
+            font-weight: bold;
+            display: block;
+            margin-top: 10px;
+            color: #333;
+        }
+
+        input[type="number"], input[type="color"], button {
+            font-size: 16px;
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 5px;
+            border: 2px solid #ccc;
+            width: 100%;
+            transition: all 0.3s ease;
+        }
+
+        input[type="number"], input[type="color"] {
+            background-color: rgba(255, 255, 255, 0.8);
+            border: 2px solid #ccc;
+        }
+
+        input:focus {
+            border-color: #ff6f61;
+            outline: none;
+        }
+
+        button {
+            background-color: #ff6f61;
+            color: white;
+            cursor: pointer;
+            font-weight: bold;
+            border: none;
+            transition: background-color 0.3s ease, transform 0.2s ease-in-out;
+        }
+
+        button:hover {
+            background-color: #ff3b2f;
+            transform: scale(1.05);
+        }
+
+        .output {
+            font-size: 1.2rem;
+            color: #333;
+            font-weight: bold;
+            min-width: 200px;
+            padding: 25px;
+            background-color: rgba(255, 255, 255, 0.5);
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+
+        .output span {
+            color: #ff6f61;
+            transition: color 0.3s ease;
+        }
+
+        canvas {
+            border: 2px solid #ff6f61;
+            border-radius: 10px;
+            background: rgba(255, 255, 255, 0.5);
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease, border-color 0.3s ease;  /* Add border-color transition */
+        }
+
+        canvas:hover {
+            transform: scale(1.05);
+        }
+
+        .dashboard-button, .previous-button {
+            position: absolute;
+            background-color: #6a89cc;
+            color: white;
+            padding: 12px 24px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+            width: auto;
+            font-size: 16px;
+        }
+
+        .dashboard-button:hover, .previous-button:hover {
+            background-color: #4a69bd;
+            transform: scale(1.05);
+        }
+
+        .dashboard-button {
+            top: 20px;
+            right: 20px;
+        }
+
+        .previous-button {
+            bottom: 20px;
+            left: 20px;
+        }
+
+        .dashboard-button i, .home-button i, .previous-button i {
+            margin-right: 8px;
+        }
+
+        #sideLengthError {
+            color: red;
+            font-size: 0.9rem;
+            display: none;
+            margin-top: 5px;
+        }
+
+        input[type="color"] {
+            width: 60px;
+            height: 40px;
+            padding: 2px 4px;
+            cursor: pointer;
+        }
+
+        .color-input-wrapper {
+            display: flex;
+            align-items: center;
+            gap: 8px; /* Decreased from 10px to 8px for better proportion */
+            width: 100%;
+            margin: 8px 0; /* Decreased from 10px to 8px */
+        }
+    </style>
+</head>
+<body>
+    <a href="C:\project\mainfile\main.html">
+        <button class="dashboard-button" id="dashboardButton">
+            <i class="fas fa-tachometer-alt"></i> Dashboard
+        </button>
+    </a>
+
+    <a href="C:\Project\mainfile\shape.html">
+        <button class="previous-button" id="previousButton">
+            <i class="fas fa-arrow-left"></i> Previous
+        </button>
+    </a>
+
+    <h1>Interactive Octagon Drawer</h1>
+    
+    <div class="container">
+        <div class="input-container">
+            <label for="sideLength">Side Length (நீளம்): </label>
+            <input type="number" id="sideLength" placeholder="Enter side length in mm" min="1">
+            <span id="sideLengthError"></span>
+            
+            <div class="color-input-wrapper">
+                <label for="fillColor">Fill Color (நிரப்பு நிறம்): </label>
+                <input type="color" id="fillColor">
+            </div>
+            
+            <div class="color-input-wrapper">
+                <label for="strokeColor">Stroke Color (கோடு நிறம்): </label>
+                <input type="color" id="strokeColor">
+            </div>
+
+            <button onclick="drawOctagon()">Draw Octagon</button>
+        </div>
+        
+        <canvas id="octagonCanvas" width="400" height="400"></canvas>
+        
+            <div class="output">
+                <p>Area (பரப்பளவு): <span id="area">0 cm²</span></p>
+            </div>
+            <div class="output">
+                <p>Perimeter (சுற்றளவு): <span id="perimeter">0 cm</span></p>
+            </div>
+    </div>
+
+    <script>
+        function drawOctagon() {
+            var sideLengthInput = document.getElementById("sideLength").value;
+            var fillColor = document.getElementById("fillColor").value;
+            var strokeColor = document.getElementById("strokeColor").value;
+            var sideLengthError = document.getElementById("sideLengthError");
+
+            sideLengthError.style.display = "none";
+            sideLengthError.textContent = "";
+
+            if (sideLengthInput === "" || isNaN(sideLengthInput)) {
+                sideLengthError.textContent = "Please enter a valid numeric side length.";
+                sideLengthError.style.display = "block";
+                return;
+            }
+
+            var sideLengthMm = parseFloat(sideLengthInput);
+
+            if (sideLengthMm <= 0 || sideLengthMm >= 51) {
+                sideLengthError.textContent = "Side length must be between 1 and 50 mm.";
+                sideLengthError.style.display = "block";
+                return;
+            }
+
+            var sideLengthCm = sideLengthMm / 10; // Convert mm to cm
+            var area = 2 * (1 + Math.sqrt(2)) * Math.pow(sideLengthCm, 2); // Area in cm²
+            var perimeter = 8 * sideLengthCm; // Perimeter in cm
+
+            document.getElementById("area").textContent = area.toFixed(2) + " cm²";
+            document.getElementById("area").style.color = fillColor;
+            document.getElementById("perimeter").textContent = perimeter.toFixed(2) + " cm";
+            document.getElementById("perimeter").style.color = strokeColor;
+
+            var canvas = document.getElementById("octagonCanvas");
+            var ctx = canvas.getContext("2d");
+
+            // Update canvas border color to match stroke color
+            canvas.style.borderColor = strokeColor;
+
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            ctx.fillStyle = fillColor;
+            ctx.strokeStyle = strokeColor;
+            ctx.lineWidth = 2;
+
+            var centerX = canvas.width / 2;
+            var centerY = canvas.height / 2;
+            var angle = Math.PI / 4;
+            var sideLengthPx = sideLengthMm * 3.77952755906; // Convert mm to pixels
+
+            ctx.beginPath();
+            var x = centerX + sideLengthPx * Math.cos(angle);
+            var y = centerY + sideLengthPx * Math.sin(angle);
+            ctx.moveTo(x, y);
+
+            for (var i = 1; i <= 8; i++) {
+                setTimeout((function(i) {
+                    return function() {
+                        var x = centerX + sideLengthPx * Math.cos(angle * i);
+                        var y = centerY + sideLengthPx * Math.sin(angle * i);
+                        ctx.lineTo(x, y);
+                        ctx.stroke();
+                        if (i === 8) {
+                            ctx.closePath();
+                            ctx.fill();
+                            ctx.stroke(); // Add this line to ensure complete stroke
+                        }
+                    };
+                })(i), i * 100);
+            }
+        }
+
+        document.getElementById("sideLength").addEventListener("keydown", function(event) {
+            if (event.key === "Enter") {
+                drawOctagon();
+            }
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Math Car Game</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #f0f0f0;
+        }
+        #gameContainer {
+            position: relative;
+            width: 50%;
+            height: 100%;
+            background: url('./road2.jpg') no-repeat center center;
+            background-size: cover;
+            overflow: hidden;
+        }
+        .car {
+            position: absolute;
+            bottom: 10px;
+            width: 50px;
+            height: 100px;
+            left: 50%;
+            transform: translateX(-50%) scaleY(-1);
+            transition: left 0.5s ease-out; /* Smoother movement *//
+            z-index: 1000; /* Ensure car stays on top */
+        }
+        .obstacle {
+            position: absolute;
+            width: 50px;
+            height: 50px;
+            background: url('./car.png') no-repeat center center;
+            background-size: contain;
+            transform: scaleY(1);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .mathProblem {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            color: white;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-weight: bold;
+            border-radius: 5px;
+        }
+        .answer-input {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            padding: 10px;
+            font-size: 18px;
+            width: 100px;
+            text-align: center;
+            border: 2px solid #333;
+            border-radius: 5px;
+            display: none;
+        }
+        
+        .problem-display {
+            position: fixed;
+            bottom: 60px;
+            left: 50%;
+            transform: translateX(-50%);
+            padding: 10px;
+            font-size: 20px;
+            background-color: rgba(0, 0, 0, 0.7);
+            color: white;
+            border-radius: 5px;
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div id="gameContainer">
+        <img src="./car.png" class="car" id="car" alt="car">
+    </div>
+    <div class="problem-display" id="problemDisplay"></div>
+    <input type="number" class="answer-input" id="answerInput" placeholder="Answer">
+    <script>
+        const gameContainer = document.getElementById('gameContainer');
+        const car = document.getElementById('car');
+
+        const carWidth = 50; // Fixed width from CSS
+        const carHeight = 100; // Fixed height from CSS
+        const gameWidth = gameContainer.offsetWidth;
+        const gameHeight = gameContainer.offsetHeight;
+        let carPosition = gameWidth / 2 - carWidth / 2;
+        let score = 0;
+
+        // Set initial car position
+        car.style.left = carPosition + 'px';
+
+        function createObstacle() {
+            const obstacle = document.createElement('div');
+            obstacle.classList.add('obstacle');
+            
+            // Add math problem to the obstacle
+            let num1, num2;
+            do {
+                num1 = Math.floor(Math.random() * 9) + 1;
+                num2 = Math.floor(Math.random() * 9) + 1;
+            } while (num1 + num2 > 9);
+            
+            const mathText = document.createElement('div');
+            mathText.classList.add('mathProblem');
+            mathText.innerText = `${num1} + ${num2}`;
+            obstacle.dataset.answer = num1 + num2;
+            
+            obstacle.appendChild(mathText);
+            obstacle.style.left = Math.floor(Math.random() * (gameWidth - carWidth)) + 'px';
+            obstacle.style.top = '0px';
+            gameContainer.appendChild(obstacle);
+            moveObstacle(obstacle);
+        }
+
+        // Remove the separate math problem creation
+        // Comment out or remove this line:
+        // setInterval(createMathProblem, 5000);
+
+        function moveObstacle(obstacle) {
+            let obstaclePosition = 0; // Start from top
+            const interval = setInterval(() => {
+                if (obstaclePosition >= gameHeight) {
+                    clearInterval(interval);
+                    gameContainer.removeChild(obstacle);
+                } else {
+                    obstaclePosition += 5; // Move downward
+                    obstacle.style.top = obstaclePosition + 'px';
+                    checkCollision(obstacle);
+                }
+            }, 50);
+        }
+
+        function moveCarToAnswer(answer) {
+            // Calculate new position based on answer (1-9)
+            // Lower answers move car left, higher answers move car right
+            const newPosition = (answer / 9) * (gameWidth - carWidth);
+            carPosition = newPosition;
+            car.style.left = carPosition + 'px';
+        }
+
+        // Update the checkCollision function
+        function checkCollision(element) {
+            const elementRect = element.getBoundingClientRect();
+            const carRect = car.getBoundingClientRect();
+            if (
+                elementRect.left < carRect.right &&
+                elementRect.right > carRect.left &&
+                elementRect.top < carRect.bottom &&
+                elementRect.bottom > carRect.top
+            ) {
+                const mathProblem = element.querySelector('.mathProblem');
+                const problemDisplay = document.getElementById('problemDisplay');
+                const answerInput = document.getElementById('answerInput');
+                const correctAnswer = parseInt(element.dataset.answer);
+                
+                // Show problem and input
+                problemDisplay.textContent = `Solve: ${mathProblem.innerText}`;
+                problemDisplay.style.display = 'block';
+                answerInput.style.display = 'block';
+                answerInput.value = '';
+                answerInput.focus();
+
+                // Handle answer submission
+                answerInput.onkeypress = function(e) {
+                    if (e.key === 'Enter') {
+                        const userAnswer = parseInt(answerInput.value);
+                        if (userAnswer === correctAnswer) {
+                            score += 10;
+                            moveCarToAnswer(correctAnswer);
+                            problemDisplay.textContent = `Correct! Score: ${score}`;
+                            setTimeout(() => {
+                                problemDisplay.style.display = 'none';
+                                answerInput.style.display = 'none';
+                            }, 1000);
+                        } else {
+                            problemDisplay.textContent = 'Wrong answer! Try another problem.';
+                            setTimeout(() => {
+                                problemDisplay.style.display = 'none';
+                                answerInput.style.display = 'none';
+                            }, 1000);
+                        }
+                        gameContainer.removeChild(element);
+                    }
+                };
+            }
+        }
+
+        // Remove the keyboard event listener
+        // document.addEventListener('keydown'... should be removed
+
+        setInterval(createObstacle, 3000); // Increased time between obstacles
+  
+        // Check if the car image is loaded correctly
+        car.onerror = function() {
+            console.error('Failed to load car image');
+            this.src = 'C:/project/cargame/car.png'; // Try absolute path if relative path fails
+        };
+    </script>
+</body>
+</html>

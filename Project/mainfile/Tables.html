@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+       <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <title>Multiplication, Addition, and Subtraction Tables</title>
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #e0f7fa, #ffffff);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        .container {
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            width: 80%;
+            max-width: 800px;
+        }
+
+        h1 {
+            margin-bottom: 20px;
+            color: #333;
+            font-size: 2.5rem;
+        }
+
+        .input-section {
+            margin-bottom: 20px;
+        }
+
+        .input-section label {
+            margin-right: 10px;
+            font-weight: bold;
+            font-size: 1.2rem;
+        }
+
+        .input-section input {
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            width: 150px;
+            font-size: 1rem;
+        }
+
+        .input-section button {
+            padding: 10px 20px;
+            border: none;
+            background-color: #007bff;
+            color: white;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s, transform 0.3s;
+            font-size: 1rem;
+        }
+
+        .input-section button:hover {
+            background-color: #0056b3;
+            transform: scale(1.05);
+        }
+
+        .tables {
+            display: flex;
+            justify-content: space-around;
+            flex-wrap: wrap;
+        }
+
+        .table {
+            width: 30%;
+            margin-top: 20px;
+            background: #f8f9fa;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            padding: 10px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px;
+        }
+
+        table, th, td {
+            border: 1px solid #dee2e6;
+        }
+
+        th, td {
+            padding: 10px;
+            text-align: center;
+        }
+
+        th {
+            background-color: #007bff;
+            color: white;
+            font-size: 1.1rem;
+        }
+
+        tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+
+        .table h2 {
+            margin-bottom: 10px;
+            color: #333;
+            font-size: 1.5rem;
+        }
+
+        .table h2::after {
+            content: '';
+            display: block;
+            width: 50px;
+            height: 3px;
+            background: #007bff;
+            margin: 10px auto 0;
+        }
+
+        /* Additional Styling */
+        .input-section input:focus {
+            border-color: #007bff;
+            outline: none;
+            box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+        }
+
+        .table {
+            transition: transform 0.3s;
+        }
+
+        .table:hover {
+            transform: translateY(-10px);
+        }
+
+        .table table {
+            transition: background-color 0.3s;
+        }
+
+        .table table:hover {
+            background-color: #e9ecef;
+        }
+
+        .dashboard-button, .previous-button {
+            position: absolute;
+            background-color: #6a89cc;
+            color: white;
+            padding: 12px 24px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+            width: auto;
+            font-size: 16px;
+        }
+
+        .dashboard-button {
+            top: 20px;
+            right: 20px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <a href="C:\Project\mainfile\main.html">
+        <button class="dashboard-button" id="dashboardButton">
+            <i class="fas fa-tachometer-alt"></i> Dashboard
+        </button>
+    </a>
+
+    <div class="container">
+        <h1>Multiplication, Addition, and Subtraction Tables</h1>
+        <div class="input-section">
+            <label for="number">Enter a number:</label>
+            <input type="number" id="number" placeholder="Enter a number" required>
+            <button id="generate">Generate Tables</button>
+        </div>
+        <div class="tables">
+            <div class="table" id="multiplication-table">
+                <h2>Multiplication Table</h2>
+                <table></table>
+            </div>
+            <div class="table" id="addition-table">
+                <h2>Addition Table</h2>
+                <table></table>
+            </div>
+            <div class="table" id="subtraction-table">
+                <h2>Subtraction Table</h2>
+                <table></table>
+            </div>
+        </div>
+    </div>
+    <script>
+             document.getElementById('generate').addEventListener('click', function() {
+             const number = parseInt(document.getElementById('number').value);
+            if (isNaN(number)) {
+                alert('Please enter a valid number');
+                return;
+            }
+
+            generateMultiplicationTable(number);
+            generateAdditionTable(number);
+            generateSubtractionTable(number);
+            });
+
+        function generateMultiplicationTable(number) {
+            const table = document.querySelector('#multiplication-table table');
+            table.innerHTML = '';
+
+            for (let i = 1; i <= 10; i++) {
+                const row = table.insertRow();
+                const cell1 = row.insertCell(0);
+                const cell2 = row.insertCell(1);
+                const cell3 = row.insertCell(2);
+
+                cell1.textContent = `${number} x ${i}`;
+                cell2.textContent = '=';
+                cell3.textContent = number * i;
+            }
+        }
+
+        function generateAdditionTable(number) {
+            const table = document.querySelector('#addition-table table');
+            table.innerHTML = '';
+
+            for (let i = 1; i <= 10; i++) {
+                const row = table.insertRow();
+                const cell1 = row.insertCell(0);
+                const cell2 = row.insertCell(1);
+                const cell3 = row.insertCell(2);
+
+                cell1.textContent = `${number} + ${i}`;
+                cell2.textContent = '=';
+                cell3.textContent = number + i;
+            }
+        }
+
+        function generateSubtractionTable(number) {
+            const table = document.querySelector('#subtraction-table table');
+            table.innerHTML = '';
+
+            for (let i = 1; i <= 10; i++) {
+                const row = table.insertRow();
+                const cell1 = row.insertCell(0);
+                const cell2 = row.insertCell(1);
+                const cell3 = row.insertCell(2);
+
+                cell1.textContent = `${number} - ${i}`;
+                cell2.textContent = '=';
+                cell3.textContent = number - i;
+            }
+        }
+        // Add event listener for Enter key in the radius input
+        document.getElementById("radius").addEventListener("keydown", function(event) {
+            if (event.key === "Enter") {
+                cal();
+            }
+        });
+    </script>
+</body>
+</html>

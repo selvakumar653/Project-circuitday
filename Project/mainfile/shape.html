@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shapes</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 20px;
+            padding-top: 20px;
+            text-align: center;
+            /* Lighter gradient colors without animation */
+            background: linear-gradient(45deg, #f4e1d2, #d9f7fc, #f9e7d9, #e8f9e5);
+            background-size: 400% 400%;
+        }
+
+        h1 {
+            width: 100%;
+            font-size: 36px;
+            color: #333;
+            margin-top: 10px;
+            text-decoration: none; /* Removed underline */
+        }
+
+        div {
+            background-color: rgba(255, 255, 255, 0.8); /* Semi-transparent white */
+            border: 1px solid #ddd;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            padding: 20px;
+            width: 250px;
+            height: 320px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        div:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+        }
+
+        img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 10px;
+        }
+
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+
+        .shape-image {
+            width: auto;
+            height: auto;
+        }
+
+        
+        .dashboard-button{
+            position: absolute;
+            background-color: #6a89cc;
+            color: white;
+            padding: 12px 24px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+            width: auto;
+            font-size: 16px;
+        }
+
+        .dashboard-button:hover{
+            background-color: #4a69bd;
+            transform: scale(1.05);
+        }
+
+        .dashboard-button {
+            top: 20px;
+            left: 20px;
+        }
+        .dashboard-button i{
+            margin-right: 8px;
+        }
+    </style>
+</head>
+<body>
+        <!-- Dashboard Button (Right Side) -->
+        <a href="C:\project\mainfile\main.html"> <!-- Add your link here -->
+            <button class="dashboard-button" id="dashboardButton">
+                <i class="fas fa-tachometer-alt"></i> Dashboard <!-- Dashboard icon -->
+            </button>
+        </a>
+    <h1>Shapes And Dimensions</h1>
+    <a href="C:\project\shapecode\Square.html">
+        <div>
+            <img src="C:\project\shapes\OIP-removebg-preview.png" alt="square" class="shape-image">
+            <h1>Square</h1>
+        </div>
+    </a>
+    <a href="C:\project\shapecode\Rectangle.html">
+        <div>
+            <img src="C:\project\shapes\red-rectangle-png-3-removebg-preview.png" alt="rectangle" class="shape-image" width="100">
+            <h1>Rectangle</h1>
+        </div>
+    </a>
+    <a href="C:\project\shapecode\parallelogram.html">
+        <div>
+            <img src="C:\project\shapes\R-removebg-preview.png" alt="parallelogram" class="shape-image" width="150">
+            <h1>Parallelogram</h1>
+        </div>
+    </a>
+    <a href="C:\project\shapecode\pentagon.html">    
+        <div>
+            <img src="C:\project\shapes\red_pentagon-removebg-preview.png" alt="pentagon" height="200px" width="200px"></a>
+            <h1>Pentagon</h1>
+        </div>
+    </a>
+    <a href="C:\project\shapecode\Hexagon.html">
+        <div>
+            <img src="C:\project\shapes\red-isolated-big-hexagon-shape-red-hexagon-icon-free-vector-removebg-preview.png" alt="hexagon" class="shape-image">
+             <h1>Hexagon</h1>
+        </div>
+    </a>
+    <a href="C:\project\shapecode\octagon.html">
+        <div>
+            <img src="C:\project\shapes\OIP-removebg-previewoctagon.png" alt="octagon" class="shape-image">
+            <h1>Octagon</h1>
+        </div>
+    </a>
+    <a href="C:\project\shapecode\circle.html">
+        <div>
+            <img src="C:\project\shapes\red-circle-1155276042606ekqvli9k-removebg-preview.png" alt="circle" height="200px" width="200px">
+            <h1>Circle</h1>
+        </div>
+    </a>
+    <a href="C:\project\shapecode\oval.html">
+        <div>
+            <img src="C:\project\shapes\90-902130_red-oval-images-circle-removebg-preview.png" alt="oval" class="shape-image">
+            <h1>Oval</h1>
+        </div>
+    </a>
+    <a href="C:\project\shapecode\trianglemenu.html">
+        <div>
+            <img src="C:\project\shapes\png-transparent-red-triangle-right-triangle-red-triangle-angle-photography-triangle-removebg-preview.png" alt="triangle" class="shape-image"></a>
+            <h1>Triangle</h1>
+        </div>
+    </a>
+    <a href="C:\project\shapecode\rhombus.html">
+        <div>
+            <center>
+            <img src="C:\project\shapes\OIP2-removebg-preview.png" alt="rhombus" height="150px" width="150px">
+            </center>
+            <h1>Rhombus</h1>
+        </div>
+    </a>    
+</body>
+</html>

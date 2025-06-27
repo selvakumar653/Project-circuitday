@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interactive Acute Triangle Drawer</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #f6d365 0%, #fda085 100%);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            color: #333;
+            text-align: center;
+            margin-top: 0px; /* Reduced top margin */
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+            color: #333;
+            text-shadow: 2px 2px 4px rgba(255, 255, 255, 0.5);
+        }
+
+        .container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 40px;
+            margin-top: 10px; /* Reduced top margin */
+        }
+
+        .input-container {
+            background-color: rgba(255, 255, 255, 0.5);
+            padding: 40px;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            width: auto; /* Increased width */
+            height: auto; /* Increased height */
+            transition: transform 0.3s ease-in-out;
+            display: flex;
+            flex-direction: column;
+            align-items: start;
+        }
+
+        .input-container:hover, .output:hover {
+            transform: translateY(-5px);
+        }
+
+        label {
+            font-size: 0.875rem;
+            font-weight: bold;
+            display: block;
+            margin-top: 10px;
+            color: #333;
+        }
+
+        input[type="number"], input[type="color"], button {
+            font-size: 16px;
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 5px;
+            border: 2px solid #ccc;
+            width: 100%;
+            transition: all 0.3s ease;
+        }
+
+        input[type="color"] {
+            width: 60px;
+            height: 40px;
+            padding: 2px 4px;
+            cursor: pointer;
+        }
+
+        .color-input-wrapper {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            width: 100%;
+            margin: 8px 0;
+        }
+
+        button {
+            background-color: #ff6f61;
+            color: white;
+            cursor: pointer;
+            font-weight: bold;
+            border: none;
+            transition: background-color 0.3s ease, transform 0.2s ease-in-out;
+            font-size: 14px; /* Reduced font size */
+            padding: 8px 16px; /* Reduced padding */
+            width: 250px; /* Adjusted width */
+        }
+
+        button:hover {
+            background-color: #ff3b2f;
+            transform: scale(1.05);
+        }
+
+        .output {
+            font-size: 1.2rem;
+            color: #333;
+            font-weight: bold;
+            min-width: 200px;
+            padding: 25px;
+            background-color: rgba(255, 255, 255, 0.5);
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+
+        canvas {
+            border: 2px solid #ff6f61;
+            border-radius: 10px;
+            background: rgba(255, 255, 255, 0.5);
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease, border-color 0.3s ease;
+            width: 700px;
+        }
+
+        canvas:hover {
+            transform: scale(1.05);
+        }
+
+        .dashboard-button, .previous-button {
+            position: absolute;
+            background-color: #6a89cc;
+            color: white;
+            padding: 12px 24px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+            width: auto;
+            font-size: 16px;
+        }
+
+        .dashboard-button {
+            top: 20px;
+            right: 20px;
+        }
+
+        .previous-button {
+            bottom: 10px;
+            left: 20px;
+        }
+
+        #sideError {
+            color: red;
+            font-size: 0.9rem;
+            display: none;
+            margin-top: 5px;
+        }
+    </style>
+</head>
+<body>
+    <a href="C:/project/mainfile/main.htm">
+        <button class="dashboard-button" id="dashboardButton">
+            <i class="fas fa-tachometer-alt"></i> Dashboard
+        </button>
+    </a>
+
+    <a href="C:\project\shapecode\trianglemenu.html">
+        <button class="previous-button" id="previousButton">
+            <i class="fas fa-arrow-left"></i> Previous
+        </button>
+    </a>
+
+    <h1>Interactive Acute Triangle Drawer</h1>
+    
+    <div class="container">
+        <div class="input-container">
+            <label for="side1">Side 1 Length (நீளம் 1): </label>
+            <input type="number" id="side1" placeholder="Enter side 1 length in mm" min="1">
+            
+            <label for="side2">Side 2 Length (நீளம் 2): </label>
+            <input type="number" id="side2" placeholder="Enter side 2 length in mm" min="1">
+            
+            <label for="side3">Side 3 Length (நீளம் 3): </label>
+            <input type="number" id="side3" placeholder="Enter side 3 length in mm" min="1">
+            
+            <div class="color-input-wrapper">
+                <label for="fillColor">Fill Color (நிரப்பு நிறம்): </label>
+                <input type="color" id="fillColor">
+            </div>
+            
+            <div class="color-input-wrapper">
+                <label for="strokeColor">Stroke Color (கோடு நிறம்): </label>
+                <input type="color" id="strokeColor">
+            </div>
+            
+            <button onclick="drawAcuteTriangle()">Draw Triangle</button>
+            <span id="sideError"></span>
+        </div>
+
+        <canvas id="canvas" width="400" height="400"></canvas>
+
+        <div class="output">
+            <p>Area (பரப்பளவு): <span id="area">0 cm²</span></p>
+        </div>
+        <div class="output">
+            <p>Perimeter (சுற்றளவு): <span id="perimeter">0 cm</span></p>
+        </div>
+    </div>
+
+    <script>
+        function drawAcuteTriangle() {
+            var side1 = parseFloat(document.getElementById("side1").value);
+            var side2 = parseFloat(document.getElementById("side2").value);
+            var side3 = parseFloat(document.getElementById("side3").value);
+            var fillColor = document.getElementById("fillColor").value;
+            var strokeColor = document.getElementById("strokeColor").value;
+            var sideError = document.getElementById("sideError");
+
+            // Reset error message
+            sideError.style.display = "none";
+            sideError.textContent = "";
+
+            // Validation
+            if (isNaN(side1) || isNaN(side2) || isNaN(side3) || side1 <= 0 || side2 <= 0 || side3 <= 0) {
+                sideError.textContent = "Please enter valid side lengths.";
+                sideError.style.display = "block";
+                return;
+            }
+
+            if (side1 <= 301 || side2 <= 301 || side3 <= 301) {
+                sideError.textContent = "Radius must be between 1 and 249.";
+                sideError.style.display = "block";
+                return;
+            }
+
+            // Convert mm to cm for calculations
+            var side1Cm = side1 / 10;
+            var side2Cm = side2 / 10;
+            var side3Cm = side3 / 10;
+
+            // Calculate area and perimeter
+            var s = (side1Cm + side2Cm + side3Cm) / 2;
+            var area = Math.sqrt(s * (s - side1Cm) * (s - side2Cm) * (s - side3Cm));
+            var perimeter = side1Cm + side2Cm + side3Cm;
+
+            // Update measurements with animation
+            document.getElementById("area").textContent = area.toFixed(2) + " cm²";
+            document.getElementById("area").style.color = fillColor;
+            document.getElementById("perimeter").textContent = perimeter.toFixed(2) + " cm";
+            document.getElementById("perimeter").style.color = strokeColor;
+
+            var canvas = document.getElementById("canvas");
+            var ctx = canvas.getContext("2d");
+
+            canvas.style.borderColor = strokeColor;
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            ctx.fillStyle = fillColor;
+            ctx.strokeStyle = strokeColor;
+            ctx.lineWidth = 2;
+
+            // Animated drawing
+            ctx.beginPath();
+            ctx.moveTo(50, 300);
+
+            setTimeout(() => {
+                ctx.lineTo(50 + side1, 300);
+                ctx.stroke();
+            }, 100);
+
+            setTimeout(() => {
+                ctx.lineTo(50 + (side1 / 2), 300 - side2);
+                ctx.stroke();
+            }, 200);
+
+            setTimeout(() => {
+                ctx.closePath();
+                ctx.fill();
+                ctx.stroke();
+            }, 300);
+        }
+
+        // Add event listeners for Enter key
+        document.querySelectorAll('input').forEach(input => {
+            input.addEventListener("keydown", function(event) {
+                if (event.key === "Enter") {
+                    drawAcuteTriangle();
+                }
+            });
+        });
+    </script>
+</body>
+</html>

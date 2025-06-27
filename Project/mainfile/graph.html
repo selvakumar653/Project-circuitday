@@ -1,0 +1,586 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interactive Graphs with MCQs</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        /* Enhanced Styling */
+        :root {
+            --primary-color: #ff6f61;  /* Coral */
+            --secondary-color: #6a4a4a;  /* Dark Brown */
+            --accent-color: #f8bbd0;  /* Light Pink */
+            --text-color-light: #fff;
+            --text-color-dark: #333;
+            --bg-gradient-start: #5a3c3e;
+            --bg-gradient-end: #ee0524;
+        }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            transition: all 0.3s ease-in-out; /* Smooth transitions for interactive elements */
+        }
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, var(--bg-gradient-start), var(--bg-gradient-end));
+            color: var(--text-color-light);
+            padding: 30px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+        h1 {
+            text-align: center;
+            margin-bottom: 30px;
+            font-size: 2.5rem;
+            letter-spacing: 1px;
+            text-shadow: 2px 2px 3px rgba(0,0,0,0.3);
+            color: var(--accent-color); /* Accent color for heading */
+        }
+        select, input, button {
+            padding: 14px;
+            font-size: 1.1rem;
+            border-radius: 10px;
+            border: none;
+            margin-top: 15px;
+            width: 100%;
+            max-width: 450px;
+            box-sizing: border-box;
+            background-color: var(--text-color-light);
+            color: var(--text-color-dark);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+        select, input {
+            margin-bottom: 25px;
+        }
+        select:focus, input:focus {
+            outline: none;
+            box-shadow: 0 5px 12px var(--accent-color);
+            transform: translateY(-2px);
+        }
+        button {
+            background-color: var(--secondary-color);
+            color: var(--text-color-light);
+            cursor: pointer;
+            font-weight: bold;
+            letter-spacing: 0.5px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.4);
+            transition: background-color 0.4s, transform 0.4s;
+        }
+        .action-buttons button {
+            margin: 0 10px;
+        }
+        button:hover {
+            background-color: var(--primary-color);
+            transform: scale(1.05);
+            box-shadow: 0 6px 15px rgba(0,0,0,0.5);
+        }
+        button:active {
+            transform: scale(0.98);
+            box-shadow: 0 3px 6px rgba(0,0,0,0.4);
+        }
+        .container {
+            max-width: 1200px;
+            padding: 40px;
+            background-color: rgba(255, 255, 255, 0.1); /* Semi-transparent white container */
+            border-radius: 15px;
+            text-align: center;
+            backdrop-filter: blur(10px); /* Glassmorphism effect */
+            box-shadow: 0 8px 30px rgba(0,0,0,0.3);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        .action-buttons, .input-container, .graph-container, .mcq-container {
+            margin-bottom: 30px;
+        }
+        .graph-container {
+            text-align: center;
+        }
+        .input-container {
+            text-align: center;
+        }
+        .chart-container {
+            position: relative;
+            height: 450px; /* Increased height for better visualization */
+            width: 100%;
+            background-color: rgba(255, 255, 255, 0.08);
+            border-radius: 10px;
+            padding: 15px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+
+        .dashboard-button, .previous-button {
+            position: absolute;
+            background-color: #6a89cc;
+            color: white;
+            padding: 12px 24px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+            width: auto;
+            font-size: 16px;
+        }
+
+        .dashboard-button {
+            top: 20px;
+            right: 20px;
+        }
+
+    </style>
+</head>
+<body>
+    <a href="C:\Project\mainfile\main.html">
+        <button class="dashboard-button" id="dashboardButton">
+            <i class="fas fa-tachometer-alt"></i> Dashboard
+        </button>
+    </a>
+
+    <div class="container">
+        <h1>Interactive Graphs (ஊடாடும் வரைபடங்கள்)</h1>
+        <div class="action-buttons">
+        <button onclick="resetGraph()">Reset Graph (வரைபடத்தை மீட்டமை)</button>
+        </div>
+        <div class="input-container">
+            <select id="graph-select" onchange="updateInputFields()">
+                <option value="none">Select Graph Type (வரைபட வகையை தேர்ந்தெடு)</option>
+                <option value="line">Line Graph (வரி வரைபடம்)</option>
+                <option value="bar">Bar Graph (சட்ட வரைபடம்)</option>
+                <option value="pie">Pie Chart (பை விளக்கப்படம்)</option>
+                <option value="histogram">Histogram (ஹிஸ்டோகிராம்)</option>
+                <option value="linear">Linear Equation (நேரியல் சமன்பாடு)</option>
+                <option value="quadratic">Quadratic Equation (இருபடிச் சமன்பாடு)</option>
+            </select>
+        </div>
+        <div class="input-container" id="input-container">
+            <!-- Input fields will be dynamically added here -->
+        </div>
+        <div class="graph-container">
+            <div class="chart-container">
+                <canvas id="myChart" width="400" height="200"></canvas>
+            </div>
+        </div>
+
+    </div>
+    <script>
+        let currentGraphType = 'none';  
+        let chart;
+        const graphData = {
+            line: {
+                labels: ['January', 'February', 'March', 'April', 'May'],
+                datasets: [{
+                    label: 'Sales Over Months',
+                    data: [65, 59, 80, 81, 56],
+                    fill: false,
+                    borderColor: 'rgb(75, 192, 192)',
+                    tension: 0.1
+                }]
+            },
+            bar: {
+                labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple'],
+                datasets: [{
+                    label: 'Color Distribution',
+                    data: [12, 19, 3, 5, 2],
+                    backgroundColor: ['red', 'blue', 'yellow', 'green', 'purple']
+                }]
+            },
+            pie: {
+                labels: ['Red', 'Blue', 'Yellow'],
+                datasets: [{
+                    data: [300, 50, 100],
+                    backgroundColor: ['red', 'blue', 'yellow']
+                }]
+            },
+            histogram: {
+                labels: ['0-10', '10-20', '20-30', '30-40', '40-50'],
+                datasets: [{
+                    label: 'Frequency Distribution',
+                    data: [12, 19, 3, 5, 2],
+                    backgroundColor: 'rgba(255, 99, 132, 0.2)',
+                    borderColor: 'rgba(255, 99, 132, 1)',
+                    borderWidth: 1
+                }]
+            },
+            linear: {
+                labels: [],
+                datasets: [{
+                    label: 'Linear Equation',
+                    data: [],
+                    borderColor: 'rgb(255, 206, 86)',
+                    fill: false
+                }]
+            },
+            quadratic: {
+                labels: [],
+                datasets: [{
+                    label: 'Quadratic Equation',
+                    data: [],
+                    borderColor: 'rgb(153, 102, 255)',
+                    fill: false
+                }]
+            }
+        };
+        const mcqQuestions = {
+            line: [
+                {
+                    question: "What is the data trend in the line graph?",
+                    options: ["Increasing", "Decreasing", "Fluctuating", "Constant"],
+                    correctAnswer: "Increasing"
+                },
+                {
+                    question: "Which month had the highest sales?",
+                    options: ["January", "February", "March", "April"],
+                    correctAnswer: "March"
+                }
+            ],
+            bar: [
+                {
+                    question: "Which color has the highest value in the bar graph?",
+                    options: ["Red", "Blue", "Yellow", "Purple"],
+                    correctAnswer: "Blue"
+                },
+                {
+                    question: "Which category has the lowest value?",
+                    options: ["Red", "Blue", "Yellow", "Purple"],
+                    correctAnswer: "Purple"
+                }
+            ],
+            pie: [
+                {
+                    question: "Which color represents the largest portion in the pie chart?",
+                    options: ["Red", "Blue", "Yellow"],
+                    correctAnswer: "Red"
+                },
+                {
+                    question: "What percentage of the pie chart is taken by the Blue section?",
+                    options: ["10%", "20%", "30%", "50%"],
+                    correctAnswer: "10%"
+                }
+            ],
+            histogram: [
+                {
+                    question: "Which interval has the highest frequency in the histogram?",
+                    options: ["0-10", "10-20", "20-30", "40-50"],
+                    correctAnswer: "10-20"
+                },
+                {
+                    question: "Which interval has the lowest frequency?",
+                    options: ["0-10", "10-20", "20-30", "40-50"],
+                    correctAnswer: "40-50"
+                }
+            ],
+            linear: [
+                {
+                    question: "What is the slope of the linear equation?",
+                    options: ["Positive", "Negative", "Zero"],
+                    correctAnswer: "Positive" // Assume a default for this example
+                }
+            ],
+            quadratic: [
+                {
+                    question: "What is the shape of the quadratic graph?",
+                    options: ["Straight Line", "U-shape", "Inverted U-shape"],
+                    correctAnswer: "U-shape" // Assume a default for this example
+                }
+            ]
+        };
+        
+        function updateInputFields() {
+            const graphType = document.getElementById('graph-select').value;
+            currentGraphType = graphType;
+            let inputFieldsHTML = '';
+            if (graphType === 'linear') {
+                inputFieldsHTML = `
+                    <label for="linearEquation">Enter Linear Equation (y = mx + b) (நேரியல் சமன்பாட்டை உள்ளிடவும் (y = mx + b)):</label>
+                    <input type="text" id="linearEquation" placeholder="Enter m and b separated by commas (e.g., 2,3)">
+                `;
+            } else if (graphType === 'quadratic') {
+                inputFieldsHTML = `
+                    <label for="quadraticEquation">Enter Quadratic Equation (y = ax^2 + bx + c) (இருபடிச் சமன்பாட்டை உள்ளிடவும் (y = ax^2 + bx + c)):</label>
+                    <input type="text" id="quadraticEquation" placeholder="Enter a, b, and c separated by commas (e.g., 1,-3,2)">
+                `;
+            } else if (graphType !== 'none') {
+                inputFieldsHTML = `
+                    <label for="${graphType}Data"></label>
+                    <input type="text" id="${graphType}Data" placeholder="Enter values separated by commas">
+                `;
+            }
+            inputFieldsHTML += `<button onclick="generateGraph()">Generate Graph (உருவாக்கு
+ வரைபடம்)</button>`;
+            document.getElementById('input-container').innerHTML = inputFieldsHTML;
+        }
+
+        function generateGraph() {
+            const graphType = currentGraphType;
+            let inputValue;
+
+            if (graphType === 'linear') {
+                inputValue = document.getElementById('linearEquation').value.split(',').map(Number);
+                const m = inputValue[0];
+                const b = inputValue[1];
+                graphData.linear.labels = Array.from({length: 11}, (_, x) => x - 5); // X values from -5 to 5
+                graphData.linear.datasets[0].data = graphData.linear.labels.map(x => m * x + b);
+            } else if (graphType === 'quadratic') {
+                inputValue = document.getElementById('quadraticEquation').value.split(',').map(Number);
+                const a = inputValue[0];
+                const b = inputValue[1];
+                const c = inputValue[2];
+                graphData.quadratic.labels = Array.from({length: 11}, (_, x) => x - 5); // X values from -5 to 5
+                graphData.quadratic.datasets[0].data = graphData.quadratic.labels.map(x => a * x ** 2 + b * x + c);
+            } else {
+                inputValue = document.getElementById(`${graphType}Data`).value.split(',').map(Number);
+                if (inputValue.some(isNaN)) {
+                    alert('Please enter valid numbers separated by commas.');
+                    return;
+                }
+                if (graphType === 'line') {
+                    graphData.line.datasets[0].data = inputValue;
+                } else if (graphType === 'bar') {
+                    graphData.bar.datasets[0].data = inputValue;
+                } else if (graphType === 'pie') {
+                    graphData.pie.datasets[0].data = inputValue;
+                } else if (graphType === 'histogram') {
+                    graphData.histogram.datasets[0].data = inputValue;
+                }
+            }
+            updateChart();
+        }
+
+        function resetGraph() {
+            document.getElementById('graph-select').value = 'none';
+            currentGraphType = 'none';
+            document.getElementById('input-container').innerHTML = '';
+            document.getElementById('mcq-container').innerHTML = '';
+            if (chart) {
+                chart.destroy();
+            }
+        }
+
+        function updateChart() {
+            const ctx = document.getElementById('myChart').getContext('2d');
+            const graphType = currentGraphType;
+            let graphConfig;
+
+            if (graphType === 'linear') {
+                graphConfig = {
+                    type: 'line',
+                    data: graphData.linear,
+                    options: {
+                        scales: {
+                            x: {
+                                ticks: {
+                                    color: 'white'
+                                },
+                                grid: {
+                                    color: 'rgba(255,255,255,0.1)' /* Light grid lines */
+                                }
+                            },
+                            y: {
+                                ticks: {
+                                    color: 'white'
+                                },
+                                grid: {
+                                    color: 'rgba(255,255,255,0.1)'
+                                }
+                            }
+                        },
+                        plugins: {
+                            legend: {
+                                labels: {
+                                    color: 'white' /* White legend text */
+                                }
+                            }
+                        }
+                    }
+                };
+            } else if (graphType === 'quadratic') {
+                graphConfig = {
+                    type: 'line',
+                    data: graphData.quadratic,
+                    options: {
+                        scales: {
+                            x: {
+                                ticks: {
+                                    color: 'white'
+                                },
+                                grid: {
+                                    color: 'rgba(255,255,255,0.1)'
+                                }
+                            },
+                            y: {
+                                ticks: {
+                                    color: 'white'
+                                },
+                                grid: {
+                                    color: 'rgba(255,255,255,0.1)'
+                                }
+                            }
+                        },
+                        plugins: {
+                            legend: {
+                                labels: {
+                                    color: 'white'
+                                }
+                            }
+                        }
+                    }
+                };
+            } else if (graphType === 'line') {
+                graphConfig = {
+                    type: 'line',
+                    data: graphData.line,
+                    options: {
+                        scales: {
+                            x: {
+                                ticks: {
+                                    color: 'white'
+                                },
+                                grid: {
+                                    color: 'rgba(255,255,255,0.1)' /* Light grid lines */
+                                }
+                            },
+                            y: {
+                                ticks: {
+                                    color: 'white'
+                                },
+                                grid: {
+                                    color: 'rgba(255,255,255,0.1)'
+                                }
+                            }
+                        },
+                        plugins: {
+                            legend: {
+                                labels: {
+                                    color: 'white' /* White legend text */
+                                }
+                            }
+                        }
+                    }
+                };
+            } else if (graphType === 'bar') {
+                graphConfig = {
+                    type: 'bar',
+                    data: graphData.bar,
+                    options: {
+                        scales: {
+                            x: {
+                                ticks: {
+                                    color: 'white'
+                                },
+                                grid: {
+                                    color: 'rgba(255,255,255,0.1)'
+                                }
+                            },
+                            y: {
+                                ticks: {
+                                    color: 'white'
+                                },
+                                grid: {
+                                    color: 'rgba(255,255,255,0.1)'
+                                }
+                            }
+                        },
+                        plugins: {
+                            legend: {
+                                labels: {
+                                    color: 'white'
+                                }
+                            }
+                        }
+                    }
+                };
+            } else if (graphType === 'pie') {
+                graphConfig = {
+                    type: 'pie',
+                    data: graphData.pie,
+                    options: {
+                        plugins: {
+                            legend: {
+                                labels: {
+                                    color: 'white' /* White legend text */
+                                }
+                            }
+                        }
+                    }
+                };
+            } else if (graphType === 'histogram') {
+                graphConfig = {
+                    type: 'bar',
+                    data: graphData.histogram,
+                    options: {
+                        scales: {
+                            x: {
+                                ticks: {
+                                    color: 'white'
+                                },
+                                grid: {
+                                    color: 'rgba(255,255,255,0.1)'
+                                }
+                            },
+                            y: {
+                                ticks: {
+                                    color: 'white'
+                                },
+                                grid: {
+                                    color: 'rgba(255,255,255,0.1)'
+                                }
+                            }
+                        },
+                        plugins: {
+                            legend: {
+                                labels: {
+                                    color: 'white'
+                                }
+                            }
+                        }
+                    }
+                };
+            }
+
+            if (chart) {
+                chart.destroy();
+            }
+            chart = new Chart(ctx, graphConfig);
+            displayMCQ();
+        }
+
+        function displayMCQ() {
+            const mcqContainer = document.getElementById('mcq-container');
+            mcqContainer.innerHTML = '';
+            const questions = mcqQuestions[currentGraphType];
+            questions.forEach((question, index) => {
+                const questionDiv = document.createElement('div');
+                questionDiv.classList.add('question');
+                const questionTitle = document.createElement('h3');
+                questionTitle.textContent = `${index + 1}. ${question.question}`;
+                questionDiv.appendChild(questionTitle);
+                question.options.forEach(option => {
+                    const label = document.createElement('label');
+                    label.innerHTML = `<input type="radio" name="question${index}" value="${option}"> ${option}`;
+                    questionDiv.appendChild(label);
+                });
+                mcqContainer.appendChild(questionDiv);
+            });
+            mcqContainer.innerHTML += `<button onclick="checkAnswer()" class="pop-effect">Submit Answers</button>`;
+            mcqContainer.style.display = 'block';
+        }
+
+        function checkAnswer() {
+            const questions = mcqQuestions[currentGraphType];
+            let score = 0;
+            questions.forEach((questionData, index) => {
+                const selectedOption = document.querySelector(`input[name="question${index}"]:checked`);
+                if (selectedOption) {
+                    if (selectedOption.value === questionData.correctAnswer) {
+                        score++;
+                    }
+                }
+            });
+            alert(`Your score is: ${score}/${questions.length}`);
+        }
+    </script>
+</body>
+</html>

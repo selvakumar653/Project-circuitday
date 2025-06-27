@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Triangle Menu</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #f6d365 0%, #fda085 100%);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            color: #333;
+            text-align: center;
+            position: relative; /* Added to position the button */
+        }
+
+        h1 {
+            font-size: 2.5rem; /* Reduced from 3rem */
+            margin-bottom: 20px; /* Reduced from 30px */
+            color: #333;
+            text-shadow: 2px 2px 4px rgba(255, 255, 255, 0.9); /* Enhanced shadow */
+            letter-spacing: 1px; /* Reduced letter spacing */
+            font-weight: bold; /* Made the font bold */
+            
+        }
+
+        .menu-wrapper {
+            display: flex;
+            justify-content: center;
+            gap: 30px; /* Increased from 20px */
+            flex-wrap: wrap;
+        }
+
+        .menu-container {
+            background-color: rgba(255, 255, 255, 0.5);
+            padding: 50px; /* Increased from 40px */
+            border-radius: 15px; /* Increased from 10px */
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1); /* Increased shadow */
+            text-align: center;
+            width: 400px; /* Increased from 350px */
+            transition: transform 0.3s ease-in-out;
+        }
+
+        .menu-container:hover {
+            transform: translateY(-10px); /* Increased from -5px */
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15); /* Increased shadow */
+        }
+
+        .menu-container h2 {
+            font-size: 2rem; /* Increased from 1.8rem */
+            margin-bottom: 20px; /* Increased from 15px */
+            color: #444;
+            text-shadow: 1px 1px 3px rgba(255, 255, 255, 0.5);
+        }
+
+        .menu-button {
+            font-size: 18px; /* Increased from 16px */
+            padding: 15px; /* Increased from 10px */
+            margin: 15px 0; /* Increased from 10px 0 */
+            border-radius: 10px; /* Increased from 5px */
+            border: 2px solid #ccc;
+            width: 100%;
+            background-color: #ff6f61; /* Coral color for buttons */
+            color: white;
+            cursor: pointer;
+            font-weight: bold;
+            border: none;
+            transition: background-color 0.3s ease, transform 0.2s ease-in-out;
+        }
+
+        .menu-button:hover {
+            background-color: #ff3b2f; /* Darker coral on hover */
+            transform: scale(1.1); /* Increased from 1.05 */
+        }
+
+        .menu-button:active {
+            transform: scale(0.9); /* Decreased from 0.95 */
+        }
+
+        .menu-button:focus {
+            outline: none;
+            box-shadow: 0 0 15px rgba(255, 111, 97, 0.5); /* Increased shadow */
+        }
+
+        .previous-button {
+            position: absolute;
+            bottom: 20px;
+            left: 20px;
+            background-color: #67e40d;
+            color: white;
+            padding: 12px 24px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+            width: auto;
+            font-size: 16px;
+        }
+
+        .previous-button:hover {
+            background-color: #78e08f;
+            transform: scale(1.05);
+        }
+
+        .previous-button i {
+            margin-right: 8px;
+        }
+        .dashboard-button, .previous-button {
+            position: absolute;
+            background-color: #6a89cc;
+            color: white;
+            padding: 12px 24px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+            width: auto;
+            font-size: 16px;
+        }
+
+        .dashboard-button {
+            top: 20px;
+            right: 20px;
+        }
+
+        @media (max-width: 768px) {
+            .menu-container {
+                width: 100%;
+                margin-bottom: 30px; /* Increased from 20px */
+            }
+        }
+
+        @media (max-width: 480px) {
+            h1 {
+                font-size: 2rem; /* Reduced from 2.5rem */
+            }
+
+            .menu-container h2 {
+                font-size: 1.8rem; /* Reduced from 2rem */
+            }
+
+            .menu-button {
+                font-size: 16px; /* Reduced from 18px */
+                padding: 12px; /* Reduced from 15px */
+            }
+        }
+    </style>
+</head>
+<body>
+    <a href="C:\project\mainfile\main.html">
+        <button class="dashboard-button" id="dashboardButton">
+            <i class="fas fa-tachometer-alt"></i> Dashboard
+        </button>
+    </a>
+    <a href="C:\project\shape.html">
+        <button class="previous-button" id="previousButton">
+            <i class="fas fa-arrow-left"></i> Previous
+        </button>
+    </a>
+    <h1>Triangle Menu</h1>
+    
+    <div class="menu-wrapper">
+        <div id="length-based" class="menu-container">
+            <h2>Length Based Triangle</h2>
+            <button class="menu-button" onclick="location.href='C:/project/shapecode/EquilateralTriangle.html'">Equilateral Triangle</button>
+            <button class="menu-button" onclick="location.href='C:/project/shapecode/IsoscelesTriangle.html'">Isosceles Triangle</button>
+            <button class="menu-button" onclick="location.href='C:/project/shapecode/ScaleneTriangle.html'">Scalene Triangle</button>
+        </div>
+        
+        <div id="angle-based" class="menu-container">
+            <h2>Angle Based Triangle</h2>
+            <button class="menu-button" onclick="location.href='C:/project/shapecode/AcuteTriangle.html'">Acute Triangle</button>
+            <button class="menu-button" onclick="location.href='C:/project/shapecode/RightTriangle.html'">Right Triangle</button>
+            <button class="menu-button" onclick="location.href='C:/project/shapecode/ObtuseTriangle.html'">Obtuse Triangle</button>
+        </div>
+    </div>
+</body>
+</html>

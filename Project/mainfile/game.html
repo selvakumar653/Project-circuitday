@@ -1,0 +1,919 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Login Page</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+
+    <style>
+
+        /* Live Background */
+
+        body {
+
+            background-size: cover;
+
+            background-position: center;
+
+            background-repeat: no-repeat;
+
+            margin: 0;
+
+            font-family: 'Poppins', sans-serif;
+
+            overflow: hidden;
+
+            background: linear-gradient(270deg, #fceabb, #f8b500, #ffb3ba, #ffdfba);
+
+            background-size: 400% 400%;
+
+            animation: animateBg 10s ease infinite;
+
+            display: flex;
+
+            justify-content: center;
+
+            align-items: center;
+
+            height: 100vh;
+
+            cursor: none; /* Hide default cursor */
+
+        }
+
+
+
+        @keyframes animateBg {
+
+            0% { background-position: 0% 50%; }
+
+            50% { background-position: 100% 50%; }
+
+            100% { background-position: 0% 50%; }
+
+        }
+
+
+        /* Cursor Effect */
+
+        .cursor {
+
+            position: fixed;
+
+            top: 0;
+
+            left: 0;
+
+            width: 20px;
+
+            height: 20px;
+
+            background: linear-gradient(45deg, #ff0099, #493240);
+
+            border-radius: 50%;
+
+            pointer-events: none;
+
+            transform: translate(-50%, -50%);
+
+            z-index: 9999;
+
+            transition: transform 0.1s ease-out, width 0.2s ease-out, height 0.2s ease-out;
+
+        }
+
+
+
+        .cursor-tail {
+
+            position: fixed;
+
+            top: 0;
+
+            left: 0;
+
+            width: 10px;
+
+            height: 10px;
+
+            background: linear-gradient(45deg, #ff0099, #493240);
+
+            border-radius: 50%;
+
+            pointer-events: none;
+
+            transform: translate(-50%, -50%);
+
+            z-index: 9998;
+
+            transition: transform 0.2s ease-out, width 0.3s ease-out, height 0.3s ease-out;
+
+        }
+
+
+
+        .container {
+
+            text-align: center;
+
+            background: rgba(255, 255, 255, 0.9);
+
+            padding: 20px;
+
+            border-radius: 15px;
+
+            box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.3);
+
+        }
+
+
+
+        .btn {
+
+            background: #007bff;
+
+            color: white;
+
+            padding: 10px 20px;
+
+            border: none;
+
+            border-radius: 5px;
+
+            cursor: pointer;
+
+            margin: 10px;
+
+            transition: transform 0.2s ease;
+
+        }
+
+
+
+        .btn:active {
+
+            transform: scale(0.9);
+
+        }
+
+
+
+        input[type="text"], input[type="password"], input[type="date"], input[type="number"] {
+
+            padding: 10px;
+
+            margin: 10px;
+
+            border: 1px solid #ccc;
+
+            border-radius: 5px;
+
+            width: 80%;
+
+        }
+
+
+
+        .error {
+
+            color: red;
+
+            display: none;
+
+        }
+
+
+
+        /* Navigation Bar */
+
+        .navbar {
+
+            position: fixed;
+
+            top: 0;
+
+            width: 100%;
+
+            background: rgba(255, 255, 255, 0.9);
+
+            box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.3);
+
+            display: flex;
+
+            justify-content: center;
+
+            padding: 10px 0;
+
+        }
+
+
+
+        .navbar a {
+
+            margin: 0 15px;
+
+            text-decoration: none;
+
+            color: #007bff;
+
+            font-weight: 600;
+
+            transition: color 0.3s ease;
+
+        }
+
+
+
+        .navbar a:hover {
+
+            color: #0056b3;
+
+        }
+
+
+
+        .navbar a.disabled {
+
+            pointer-events: none;
+
+            color: #ccc;
+
+        }
+
+
+
+        .logout-btn {
+
+            position: fixed;
+
+            top: 10px;
+
+            right: 20px;
+
+            background: #dc3545;
+
+            color: white;
+
+            padding: 10px 20px;
+
+            border: none;
+
+            border-radius: 5px;
+
+            cursor: pointer;
+
+            display: none;
+
+        }
+
+
+
+        .home-btn {
+
+            position: fixed;
+
+            top: 10px;
+
+            left: 20px;
+
+            background: #28a745;
+
+            color: white;
+
+            padding: 10px 20px;
+
+            border: none;
+
+            border-radius: 5px;
+
+            cursor: pointer;
+
+            display: none;
+
+        }
+
+
+
+        .certificate-btn {
+
+            background: #ffc107;
+
+            color: black;
+
+        }
+
+
+
+        .certificate-container {
+
+            display: none;
+
+            margin-top: 20px;
+
+            padding: 20px;
+
+            background: #fff;
+
+            border-radius: 10px;
+
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
+
+        }
+
+
+
+        .certificate-container h2 {
+
+            margin-bottom: 10px;
+
+        }
+
+
+
+        .certificate-container p {
+
+            font-size: 18px;
+
+        }
+
+
+
+        .signature {
+
+            font-family: 'Dancing Script', cursive;
+
+            font-size: 24px;
+
+            margin-top: 10px;
+
+        }
+
+
+
+        .close-btn {
+
+            background: #dc3545;
+
+            color: white;
+
+            margin-top: 10px;
+
+        }
+
+
+
+        .download-btn {
+
+            background: #28a745;
+
+            color: white;
+
+            margin-top: 10px;
+
+        }
+
+    </style>
+
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&display=swap" rel="stylesheet">
+
+    <!-- Include html2canvas library -->
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+
+</head>
+
+<body>
+       
+
+
+    <!-- Cursor Elements -->
+
+    <div class="cursor"></div>
+
+    <div class="cursor-tail"></div>
+
+
+
+
+    <!-- Navigation Bar -->
+
+    <div class="navbar">
+
+        <a href="#aboutPage" id="aboutLink">About</a>
+
+        <a href="#contactPage" id="contactLink">Contact</a>
+
+       
+    </div>
+
+
+
+    <!-- Logout Button -->
+
+    <button class="logout-btn" id="logoutBtn" onclick="logout()">Logout</button>
+
+
+
+    <!-- Home Button -->
+
+    <button class="home-btn" id="homeBtn" onclick="goToHome()">Home</button>
+
+
+
+    <!-- Login Page -->
+
+    <div class="container" id="loginPage">
+
+        <h1>Login</h1>
+
+        <p>Please enter your username and password to continue / தொடர உங்கள் பயனர்பெயர் மற்றும் கடவுச்சொல்லை உள்ளிடவும்:</p>
+
+        <input type="text" id="username" placeholder="Username / பயனர்பெயர்">
+
+        <input type="password" id="password" placeholder="Password / கடவுச்சொல்">
+
+        <input type="date" id="dob" placeholder="Date of Birth / பிறந்த தேதி" onchange="calculateAge()">
+
+        <input type="number" id="age" placeholder="Age / வயது" readonly>
+
+        <p class="error" id="errorMessage">Invalid username or password / தவறான பயனர்பெயர் அல்லது கடவுச்சொல்</p>
+
+        <button class="btn" onclick="login()">Login / உள்நுழை</button>
+
+    </div>
+
+
+
+    <!-- Main Page -->
+
+    <div class="container" id="mainPage" style="display: none;">
+
+        <h1>Welcome to the Mathematical Game / கணிதம் விளையாட்டு</h1>
+
+        <p>Select a level to start the game / விளையாட்டை தொடங்க மட்டுமான நிலையைத் தேர்ந்தெடுக்கவும்:</p>
+
+        <button class="btn" onclick="startGame('easy')">Easy / எளியது</button>
+
+        <button class="btn" onclick="startGame('medium')">Medium / மிதமான</button>
+
+        <button class="btn" onclick="startGame('hard')">Hard / கடினம்</button>
+
+        <button class="btn" onclick="startGame('extreme')">Extreme Hard / மிகக் கடினம்</button>
+
+        <button class="btn certificate-btn" onclick="showCertificate()">Get Certificate / சான்றிதழ் பெறுக</button>
+
+        <div class="certificate-container" id="certificateContainer">
+
+            <h2>Certificate of Achievement</h2>
+
+            <p>Congratulations, <span id="certificateName"></span>! You scored <span id="totalScore">0</span> points.</p>
+
+            <p class="signature">- Math Game Team</p>
+
+            <button class="btn close-btn" onclick="closeCertificate()">Close / மூடு</button>
+
+            <button class="btn download-btn" onclick="downloadCertificate()">Download Certificate / சான்றிதழ் பதிவிறக்கு</button>
+
+        </div>
+
+    </div>
+
+
+
+    <!-- Game Page -->
+
+    <div class="container game-container" id="gamePage" style="display: none;">
+
+        <h2 id="levelTitle"></h2>
+
+        <p id="question"></p>
+
+        <input type="number" id="answer" placeholder="Enter your answer">
+
+        <button class="btn" onclick="checkAnswer()">Submit / சமர்ப்பிக்க</button>
+
+        <p id="feedback"></p>
+
+        <button class="btn" onclick="goBack()">Back to Main Page / முதன்மை பக்கத்திற்கு திரும்பு</button>
+
+    </div>
+
+
+
+    <!-- About Page -->
+
+    <div class="container" id="aboutPage" style="display: none;">
+
+        <h1>About / பற்றி</h1>
+
+        <p>This is a simple mathematical game designed to help you practice basic arithmetic operations. / இது ஒரு எளிய கணித விளையாட்டு, இது அடிப்படை கணித செயல்பாடுகளை பயிற்சி செய்ய உதவும்.</p>
+
+    </div>
+
+
+
+    <!-- Contact Page -->
+
+    <div class="container" id="contactPage" style="display: none;">
+
+        <h1>Contact / தொடர்பு</h1>
+
+        <p>If you have any questions or need support, please contact us at support@mathgame.com. / உங்களுக்கு ஏதேனும் கேள்விகள் இருந்தால் அல்லது ஆதரவு தேவைப்பட்டால், தயவுசெய்து support@mathgame.com இல் எங்களை தொடர்பு கொள்ளவும்.</p>
+
+    </div>
+
+
+
+    <script>
+
+        let correctAnswer, level;
+
+        let isLoggedIn = false; // Track login state
+
+        let totalScore = 0; // Track total score
+
+        let userName = "Guest"; // Default username
+
+
+
+        // Cursor Effect
+
+        const cursor = document.querySelector('.cursor');
+
+        const cursorTail = document.querySelector('.cursor-tail');
+
+
+
+        document.addEventListener('mousemove', (e) => {
+
+            cursor.style.left = `${e.pageX}px`;
+
+            cursor.style.top = `${e.pageY}px`;
+
+            setTimeout(() => {
+
+                cursorTail.style.left = `${e.pageX}px`;
+
+                cursorTail.style.top = `${e.pageY}px`;
+
+            }, 100);
+
+        });
+
+
+
+        function login() {
+
+            const username = document.getElementById('username').value;
+
+            const password = document.getElementById('password').value;
+
+
+
+            // Default username is "Guest" if not provided
+
+            userName = username || "Guest";
+
+
+
+            // Fixed password validation
+
+            if (password === "1234") {
+
+                isLoggedIn = true;
+
+                document.getElementById('loginPage').style.display = 'none';
+
+                document.getElementById('mainPage').style.display = 'block';
+
+                document.getElementById('errorMessage').style.display = 'none';
+
+                document.getElementById('logoutBtn').style.display = 'block';
+
+                document.getElementById('homeBtn').style.display = 'block';
+
+                updateNavigation();
+
+            } else {
+
+                document.getElementById('errorMessage').style.display = 'block';
+
+            }
+
+        }
+
+
+
+        function logout() {
+
+            isLoggedIn = false;
+
+            document.getElementById('loginPage').style.display = 'block';
+
+            document.getElementById('mainPage').style.display = 'none';
+
+            document.getElementById('gamePage').style.display = 'none';
+
+            document.getElementById('aboutPage').style.display = 'none';
+
+            document.getElementById('contactPage').style.display = 'none';
+
+            document.getElementById('logoutBtn').style.display = 'none';
+
+            document.getElementById('homeBtn').style.display = 'none';
+
+            updateNavigation();
+
+
+
+            // Clear all input fields
+
+            document.getElementById('username').value = '';
+
+            document.getElementById('password').value = '';
+
+            document.getElementById('dob').value = '';
+
+            document.getElementById('age').value = '';
+
+        }
+
+
+
+        function goToHome() {
+
+            document.getElementById('mainPage').style.display = 'block';
+
+            document.getElementById('gamePage').style.display = 'none';
+
+            document.getElementById('aboutPage').style.display = 'none';
+
+            document.getElementById('contactPage').style.display = 'none';
+
+        }
+
+
+
+        function calculateAge() {
+
+            const dob = document.getElementById('dob').value;
+
+            if (dob) {
+
+                const birthDate = new Date(dob);
+
+                const today = new Date();
+
+                let age = today.getFullYear() - birthDate.getFullYear();
+
+                const monthDiff = today.getMonth() - birthDate.getMonth();
+
+                if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birthDate.getDate())) {
+
+                    age--;
+
+                }
+
+                document.getElementById('age').value = age;
+
+            }
+
+        }
+
+
+
+        function updateNavigation() {
+
+            const loginLink = document.getElementById('loginLink');
+
+            const aboutLink = document.getElementById('aboutLink');
+
+            const contactLink = document.getElementById('contactLink');
+
+
+
+            if (isLoggedIn) {
+
+                loginLink.classList.add('disabled');
+
+                aboutLink.classList.remove('disabled');
+
+                contactLink.classList.remove('disabled');
+
+            } else {
+
+                loginLink.classList.remove('disabled');
+
+                aboutLink.classList.add('disabled');
+
+                contactLink.classList.add('disabled');
+
+            }
+
+        }
+
+
+
+        function startGame(selectedLevel) {
+
+            level = selectedLevel;
+
+            document.getElementById('mainPage').style.display = 'none';
+
+            document.getElementById('gamePage').style.display = 'block';
+
+            document.getElementById('levelTitle').innerText = `Level: ${level.charAt(0).toUpperCase() + level.slice(1)}`;
+
+            generateQuestion();
+
+        }
+
+
+
+        function generateQuestion() {
+
+            let num1 = Math.floor(Math.random() * 9) + 1;
+
+            let num2 = Math.floor(Math.random() * 9) + 1;
+
+            let operation;
+
+
+
+            if (level === 'easy') {
+
+                operation = Math.random() < 0.5 ? '+' : '-';
+
+                correctAnswer = operation === '+' ? num1 + num2 : num1 - num2;
+
+                document.getElementById('question').innerText = `What is ${num1} ${operation} ${num2}?`;
+
+            } else if (level === 'medium') {
+
+                correctAnswer = num1 * num2;
+
+                document.getElementById('question').innerText = `What is ${num1} × ${num2}?`;
+
+            } else if (level === 'hard') {
+
+                correctAnswer = Math.floor(num1 / num2);
+
+                document.getElementById('question').innerText = `What is ${num1} ÷ ${num2}? (rounded)`;
+
+            } else {
+
+                correctAnswer = num1 % num2;
+
+                document.getElementById('question').innerText = `What is ${num1} % ${num2}?`;
+
+            }
+
+        }
+
+
+
+        function checkAnswer() {
+
+            let userAnswer = parseInt(document.getElementById('answer').value);
+
+            let feedback = document.getElementById('feedback');
+
+            let button = document.querySelector('.btn');
+
+            button.style.transform = 'scale(0.9)';
+
+            setTimeout(() => { button.style.transform = 'scale(1)'; }, 200);
+
+            
+
+            if (userAnswer === correctAnswer) {
+
+                totalScore++; // Increment score for correct answer
+
+                feedback.innerText = "Correct! Next question... / சரி! அடுத்த கேள்வி...";
+
+                setTimeout(() => {
+
+                    document.getElementById('answer').value = '';
+
+                    feedback.innerText = '';
+
+                    generateQuestion();
+
+                }, 1000);
+
+            } else {
+
+                feedback.innerText = "Wrong! Try again. / தவறு! மீண்டும் முயற்சி செய்க.";
+
+            }
+
+        }
+
+
+
+        function showCertificate() {
+
+            document.getElementById('certificateName').innerText = userName; // Display user's name
+
+            document.getElementById('totalScore').innerText = totalScore; // Display total score
+
+            document.getElementById('certificateContainer').style.display = 'block'; // Show certificate
+
+        }
+
+
+
+        function closeCertificate() {
+
+            document.getElementById('certificateContainer').style.display = 'none'; // Hide certificate
+
+        }
+
+
+
+        function downloadCertificate() {
+
+            const certificateContainer = document.getElementById('certificateContainer');
+
+
+
+            // Use html2canvas to convert the certificate container to an image
+
+            html2canvas(certificateContainer).then(canvas => {
+
+                const link = document.createElement('a');
+
+                link.download = 'certificate.png'; // File name
+
+                link.href = canvas.toDataURL('image/png'); // Convert canvas to image URL
+
+                link.click(); // Trigger download
+
+
+
+                // Hide only the Download button after download
+
+                document.querySelector('.download-btn').style.display = 'none';
+
+            });
+
+        }
+
+
+
+        function goBack() {
+
+            document.getElementById('gamePage').style.display = 'none';
+
+            document.getElementById('mainPage').style.display = 'block';
+
+        }
+
+
+
+        // Navigation functions
+
+        function showPage(pageId) {
+
+            if (!isLoggedIn && pageId !== 'loginPage') return; // Restrict access if not logged in
+
+            document.querySelectorAll('.container').forEach(container => {
+
+                container.style.display = 'none';
+
+            });
+
+            document.getElementById(pageId).style.display = 'block';
+
+        }
+
+
+
+        // Add event listeners to navigation links
+
+        document.querySelectorAll('.navbar a').forEach(link => {
+
+            link.addEventListener('click', function(event) {
+
+                event.preventDefault();
+
+                showPage(this.getAttribute('href').substring(1));
+
+            });
+
+        });
+
+    </script>
+
+</body>
+
+</html>

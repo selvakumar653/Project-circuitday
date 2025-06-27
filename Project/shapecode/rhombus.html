@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interactive Rhombus Drawer</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #f6d365 0%, #fda085 100%);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            color: #333;
+            text-align: center;
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+            color: #333;
+            text-shadow: 2px 2px 4px rgba(255, 255, 255, 0.5);
+        }
+
+        .container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 40px;
+            margin-top: 20px;
+        }
+
+        .input-container {
+            background-color: rgba(255, 255, 255, 0.5);
+            padding: 40px;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            width: auto;
+            height: auto;
+            transition: transform 0.3s ease-in-out;
+            display: flex;
+            flex-direction: column;
+            align-items: start;
+        }
+
+        .input-container:hover, .output:hover {
+            transform: translateY(-5px);
+        }
+
+        label {
+            font-size: 0.875rem;
+            font-weight: bold;
+            display: block;
+            margin-top: 10px;
+            color: #333;
+        }
+
+        input[type="number"], input[type="color"], button {
+            font-size: 16px;
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 5px;
+            border: 2px solid #ccc;
+            width: 100%;
+            transition: all 0.3s ease;
+        }
+
+        input[type="number"], input[type="color"] {
+            background-color: rgba(255, 255, 255, 0.8);
+            border: 2px solid #ccc;
+        }
+
+        input:focus {
+            border-color: #ff6f61;
+            outline: none;
+        }
+
+        button {
+            background-color: #ff6f61;
+            color: white;
+            cursor: pointer;
+            font-weight: bold;
+            border: none;
+            transition: background-color 0.3s ease, transform 0.2s ease-in-out;
+        }
+
+        button:hover {
+            background-color: #ff3b2f;
+            transform: scale(1.05);
+        }
+
+        .output {
+            font-size: 1.2rem;
+            color: #333;
+            font-weight: bold;
+            min-width: 200px;
+            padding: 25px;
+            background-color: rgba(255, 255, 255, 0.5);
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+
+        .output span {
+            color: #ff6f61;
+            transition: color 0.3s ease;
+        }
+
+        canvas {
+            border: 2px solid #ff6f61;
+            border-radius: 10px;
+            background: rgba(255, 255, 255, 0.5);
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease, border-color 0.3s ease;
+        }
+
+        canvas:hover {
+            transform: scale(1.05);
+        }
+
+        .dashboard-button, .previous-button {
+            position: absolute;
+            background-color: #6a89cc;
+            color: white;
+            padding: 12px 24px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+            width: auto;
+            font-size: 16px;
+        }
+
+        .dashboard-button:hover, .previous-button:hover {
+            background-color: #4a69bd;
+            transform: scale(1.05);
+        }
+
+        .dashboard-button {
+            top: 20px;
+            right: 20px;
+        }
+
+        .previous-button {
+            bottom: 20px;
+            left: 20px;
+        }
+
+        .dashboard-button i, .home-button i, .previous-button i {
+            margin-right: 8px;
+        }
+
+        #sideError, #angleError {
+            color: red;
+            font-size: 0.9rem;
+            display: none;
+            margin-top: 5px;
+        }
+
+        input[type="color"] {
+            width: 60px;
+            height: 40px;
+            padding: 2px 4px;
+            cursor: pointer;
+        }
+
+        .color-input-wrapper {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            width: 100%;
+            margin: 8px 0;
+        }
+    </style>
+</head>
+<body>
+    <a href="C:\project\mainfile\main.html">
+        <button class="dashboard-button" id="dashboardButton">
+            <i class="fas fa-tachometer-alt"></i> Dashboard
+        </button>
+    </a>
+
+    <a href="C:\Project\mainfile\shape.html">
+        <button class="previous-button" id="previousButton">
+            <i class="fas fa-arrow-left"></i> Previous
+        </button>
+    </a>
+-
+    <h1>Interactive Rhombus Drawer</h1>
+    
+    <div class="container">
+        <div class="input-container">
+            <label for="side">Side Length (பக்க அளவு):</label>
+            <input type="number" id="side" placeholder="Enter side length" min="1">
+            <span id="sideError"></span>
+            
+            <label for="angle">Angle in degrees (கோணம்):</label>
+            <input type="number" id="angle" placeholder="Enter angle" min="1" max="179">
+            <span id="angleError"></span>
+            
+            <div class="color-input-wrapper">
+                <label for="fillColor">Fill Color (நிரப்பு நிறம்): </label>
+                <input type="color" id="fillColor">
+            </div>
+            
+            <div class="color-input-wrapper">
+                <label for="strokeColor">Stroke Color (கோடு நிறம்): </label>
+                <input type="color" id="strokeColor">
+            </div>
+
+            <button onclick="drawRhombus()">Draw Rhombus</button>
+        </div>
+
+        <canvas id="canvas" width="400" height="400"></canvas>
+
+        <div class="output">
+            <p>Area (பரப்பளவு): <span id="area">0 cm²</span></p>
+        </div>
+        <div class="output">
+            <p>Perimeter (சுற்றளவு): <span id="perimeter">0 cm</span></p>
+        </div>
+    </div>
+
+    <script>
+        function drawRhombus() {
+            var sideInput = document.getElementById("side").value;
+            var angleInput = document.getElementById("angle").value;
+            var fillColor = document.getElementById("fillColor").value;
+            var strokeColor = document.getElementById("strokeColor").value;
+            var sideError = document.getElementById("sideError");
+            var angleError = document.getElementById("angleError");
+
+            // Reset the error messages
+            sideError.style.display = "none";
+            sideError.textContent = "";
+            angleError.style.display = "none";
+            angleError.textContent = "";
+
+            // Validate the side input
+            if (sideInput === "" || isNaN(sideInput) || sideInput <= 0 || sideInput >= 251) {
+                sideError.textContent = "Length must be between 1 and 250";
+                sideError.style.display = "block";
+                return;
+            }
+
+            // Validate the angle input
+            if (angleInput === "" || isNaN(angleInput) || angleInput <= 0 || angleInput >= 180) {
+                angleError.textContent = "Angle must be between 1 and 179 degrees.";
+                angleError.style.display = "block";
+                return;
+            }
+
+            var side = parseFloat(sideInput);
+            var angle = parseFloat(angleInput) * Math.PI / 180;
+
+            var canvas = document.getElementById("canvas");
+            var ctx = canvas.getContext("2d");
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            
+            var centerX = canvas.width / 2;
+            var centerY = canvas.height / 2;
+            var dx = side * Math.cos(angle / 2);
+            var dy = side * Math.sin(angle / 2);
+            
+            ctx.beginPath();
+            ctx.moveTo(centerX, centerY - side / 2);
+            ctx.lineTo(centerX + dx, centerY);
+            ctx.lineTo(centerX, centerY + side / 2);
+            ctx.lineTo(centerX - dx, centerY);
+            ctx.closePath();
+            
+            ctx.fillStyle = fillColor;
+            ctx.fill();
+            ctx.strokeStyle = strokeColor;
+            ctx.stroke();
+
+            // Calculate area and perimeter
+            var area = side * side * Math.sin(angle);
+            var perimeter = 4 * side;
+
+            document.getElementById("area").textContent = area.toFixed(2) + " cm²";
+            document.getElementById("perimeter").textContent = perimeter.toFixed(2) + " cm";
+        }
+
+        // Add event listener for Enter key in the side and angle inputs
+        document.getElementById("side").addEventListener("keydown", function(event) {
+            if (event.key === "Enter") {
+                drawRhombus();
+            }
+        });
+
+        document.getElementById("angle").addEventListener("keydown", function(event) {
+            if (event.key === "Enter") {
+                drawRhombus();
+            }
+        });
+    </script>
+</body>
+</html>
